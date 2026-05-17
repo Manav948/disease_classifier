@@ -19,7 +19,11 @@ SEVERITY_ORDER = {'Emergency': 5, 'High': 4, 'Chronic': 3, 'Moderate': 2, 'Mild'
 
 @app.route('/')
 def index():
-    return render_template('index.html', symptoms=ALL_SYMPTOMS)
+    return render_template('landing.html')
+
+@app.route('/app')
+def dashboard():
+    return render_template('app.html')
 
 @app.route('/api/symptoms')
 def get_symptoms():

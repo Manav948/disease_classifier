@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>MediScan AI — Diagnostic Dashboard</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:wght@100..900&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <style>
+        body {
+            background-color: #0b0b0c;
+            color: #e5e2e3;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(18, 18, 20, 0.7);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(60, 73, 78, 0.2);
+        }
+        .glow-cyan {
+            box-shadow: 0 0 20px rgba(38, 254, 220, 0.15);
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b0b0c;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #27272a;
+            border-radius: 10px;
+        }
+    </style>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-surface-variant": "#a3b2b8",
+                        "surface-container-highest": "#27272a",
+                        "secondary-fixed": "#26fedc",
+                        "on-secondary-container": "#006a5a",
+                        "on-background": "#e5e2e3",
+                        "background": "#0b0b0c",
+                        "primary": "#a4e6ff",
+                        "surface": "#121214",
+                        "error": "#ffb4ab",
+                        "on-surface": "#e5e2e3",
+                        "outline-variant": "#334155"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    fontFamily: {
+                        "headline": ["Geist"],
+                        "body": ["Inter"]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="font-body min-h-screen flex flex-col">
+    <!-- Top Navigation Bar -->
+    <header class="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-outline-variant/20 py-4 px-6 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-secondary-fixed text-3xl animate-pulse">clinical_notes</span>
+            <div>
+                <span class="font-headline font-bold text-xl tracking-tight text-white">MediScan <span class="text-secondary-fixed">AI</span></span>
+                <span class="text-[10px] uppercase font-bold tracking-widest text-on-surface-variant block leading-none">Diagnostic Console</span>
+            </div>
+        </div>
+        
+        <div class="flex items-center gap-6">
+            <div class="hidden sm:flex items-center gap-2 px-3 py-1 bg-secondary-fixed/10 border border-secondary-fixed/20 rounded-full">
+                <span class="w-2 h-2 rounded-full bg-secondary-fixed animate-ping"></span>
+                <span class="text-xs font-semibold text-secondary-fixed">Random Forest Engine Active</span>
+            </div>
+            
+            <a href="/" class="flex items-center gap-2 px-4 py-1.5 rounded-lg border border-outline-variant/30 text-sm text-on-surface-variant hover:text-white hover:border-white transition-all">
+                <span class="material-symbols-outlined text-sm">home</span>
+                <span>Back to Home</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Workspace Area -->
+    <main class="flex-1 max-w-[1400px] w-full mx-auto p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        <!-- Left Workspace: Symptom Selection Console -->
+        <section class="lg:col-span-7 flex flex-col gap-6">
+            
+            <!-- Symptom Tag Panel -->
+            <div class="glass-card rounded-xl p-5">
+                <div class="flex justify-between items-center mb-3">
+                    <h2 class="text-xs uppercase font-bold tracking-wider text-on-surface-variant">Active Clinical Presentation</h2>
+                    <span id="selected-count" class="text-xs bg-secondary-fixed/10 text-secondary-fixed px-2 py-0.5 rounded-full font-bold">0 Selected</span>
+                </div>
+                <div class="flex flex-wrap gap-2 items-center min-h-[44px]" id="selected-tags">
+                    <span class="text-on-surface-variant/60 text-sm italic" id="tags-hint">No symptoms selected. Choose indicators below to populate clinical profile.</span>
+                </div>
+            </div>
+
+            <!-- Symptom Search & Selection Workspace -->
+            <div class="glass-card rounded-xl p-5 flex flex-col">
+                <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-3 mb-6">
+                    <div>
+                        <h3 class="font-headline font-bold text-lg text-white">Symptom Selector</h3>
+                        <p class="text-xs text-on-surface-variant">Identify and select all matching patient presentations.</p>
+                    </div>
+                    
+                    <!-- Search Input -->
+                    <div class="relative w-full sm:w-64">
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg">search</span>
+                        <input id="symptom-search" type="text" placeholder="Filter clinical indicators..."
+                            class="w-full pl-9 pr-4 py-1.5 bg-background border border-outline-variant/30 rounded-full text-xs text-white placeholder-on-surface-variant/50 focus:outline-none focus:border-secondary-fixed/50 focus:ring-1 focus:ring-secondary-fixed/30 transition-all" />
+                    </div>
+                </div>
+
+                <!-- Double Column Symptom Workspace -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-h-[450px] overflow-y-auto pr-2" id="symptom-grid">
+                    
+                    <!-- General column -->
+                    <div>
+                        <h4 class="text-xs font-bold uppercase tracking-widest text-primary mb-3 sticky top-0 bg-[#0d0d0f]/90 py-1 flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-sm">medical_services</span>
+                            <span>General Presentation</span>
+                        </h4>
+                        <div id="general-symptoms-col" class="space-y-2">
+                            <div class="text-center py-8 text-on-surface-variant/40 text-xs">Loading symptoms...</div>
+                        </div>
+                    </div>
+
+                    <!-- Respiratory column -->
+                    <div>
+                        <h4 class="text-xs font-bold uppercase tracking-widest text-secondary-fixed mb-3 sticky top-0 bg-[#0d0d0f]/90 py-1 flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-sm">air</span>
+                            <span>Respiratory & Chest</span>
+                        </h4>
+                        <div id="respiratory-symptoms-col" class="space-y-2">
+                            <div class="text-center py-8 text-on-surface-variant/40 text-xs">Loading symptoms...</div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Predict Trigger Action -->
+                <div class="mt-6 border-t border-outline-variant/15 pt-5 flex items-center justify-between">
+                    <p class="text-xs text-on-surface-variant max-w-sm">
+                        Select a minimum of <strong class="text-secondary-fixed font-bold">2 symptoms</strong> to enable precise ML engine classification.
+                    </p>
+                    <button id="analyse-btn" onclick="analyse()" disabled
+                        class="bg-gradient-to-r from-secondary-fixed/80 to-primary/80 hover:from-secondary-fixed hover:to-primary text-black font-bold text-xs uppercase tracking-wider px-6 py-2.5 rounded-lg hover:brightness-110 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:brightness-100 transition-all glow-cyan duration-300">
+                        Run Diagnostic Analysis
+                    </button>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Right Workspace: Prediction Outcomes & Clinical Lookup -->
+        <section class="lg:col-span-5 flex flex-col gap-6">
+            
+            <!-- Output Predictions Panel -->
+            <div class="glass-card rounded-xl p-5 flex flex-col min-h-[300px]">
+                <h3 class="font-headline font-bold text-lg text-white mb-4 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-secondary-fixed">biotech</span>
+                    <span>AI Classification Outcome</span>
+                </h3>
+
+                <!-- Spinner -->
+                <div id="spinner" class="hidden flex flex-col items-center justify-center py-16 gap-3">
+                    <span class="material-symbols-outlined text-secondary-fixed text-4xl animate-spin">autorenew</span>
+                    <span class="text-xs text-on-surface-variant tracking-wider">Analyzing complex symptom clusters...</span>
+                </div>
+
+                <!-- Empty State -->
+                <div id="empty-state" class="flex flex-col items-center justify-center text-center py-16 border border-dashed border-outline-variant/20 rounded-xl">
+                    <span class="material-symbols-outlined text-5xl text-on-surface-variant/20 mb-3 animate-pulse">query_stats</span>
+                    <h4 class="text-sm font-semibold text-white">Diagnostic Output Pending</h4>
+                    <p class="text-xs text-on-surface-variant/60 max-w-xs mt-1">Select symptoms on the left and trigger prediction to initialize engine diagnostics.</p>
+                </div>
+
+                <!-- Results List -->
+                <div class="space-y-5 hidden" id="results-section"></div>
+            </div>
+
+            <!-- Dynamic Clinical Reference Panel -->
+            <div class="glass-card rounded-xl p-5 flex flex-col min-h-[220px]" id="clinical-ref-panel">
+                <h3 class="font-headline font-bold text-lg text-white mb-4 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary">clinical_notes</span>
+                    <span>Clinical Reference Guidelines</span>
+                </h3>
+                
+                <div id="clinical-ref-content" class="flex flex-col justify-center text-center py-8 border border-dashed border-outline-variant/20 rounded-xl">
+                    <span class="material-symbols-outlined text-4xl text-on-surface-variant/20 mb-2">library_books</span>
+                    <h4 class="text-xs font-semibold text-on-surface-variant">No Disease Selected</h4>
+                    <p class="text-[11px] text-on-surface-variant/50 max-w-xs mx-auto mt-1">Click on any predicted disease above to view specialized medical guidelines here.</p>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-auto border-t border-outline-variant/15 py-6 px-8 bg-[#09090b] flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-secondary-fixed text-xl">shield_heart</span>
+            <span class="text-sm font-bold text-white">MediScan AI</span>
+        </div>
+        <div class="text-xs text-on-surface-variant/70">
+            © 2026 MediScan AI. Powered by ensemble decision voting. Certified informational sandbox.
+        </div>
+    </footer>
+
+<script>
+// ── State ──
+let allSymptoms = [];
+let diseaseCatalog = [];
+let activePredictionData = null;
+const selected = new Set();
+
+// ── Init ──
+async function init() {
+    try {
+        const [sRes, dRes] = await Promise.all([
+            fetch('/api/symptoms').then(r => r.json()),
+            fetch('/api/diseases').then(r => r.json())
+        ]);
+        allSymptoms = sRes.symptoms || [];
+        diseaseCatalog = dRes.diseases || [];
+        renderSymptoms(allSymptoms);
+    } catch(e) {
+        console.error(e);
+        const errHtml = '<div class="text-center text-error text-xs py-8">Failed to load medical symptoms. Verify backend server activity.</div>';
+        document.getElementById('general-symptoms-col').innerHTML = errHtml;
+        document.getElementById('respiratory-symptoms-col').innerHTML = '';
+    }
+}
+
+// ── Symptom categories ──
+const RESPIRATORY_KEYWORDS = [
+    'cough','breathing','breath','shortness','chest','wheez','respiratory',
+    'mucus','phlegm','sputum','bronch','pulmon','lung','asthma','throat',
+    'nasal','sinus','rhinit','cold','sneez','runny','congestion','oxygen'
+];
+function isRespiratory(sym) {
+    const lower = sym.toLowerCase();
+    return RESPIRATORY_KEYWORDS.some(k => lower.includes(k));
+}
+
+// ── Render symptom divs (No Label tag prevents double click propagation!) ──
+function renderSymptoms(syms) {
+    const generalCol = document.getElementById('general-symptoms-col');
+    const respiratoryCol = document.getElementById('respiratory-symptoms-col');
+
+    const generalSyms = syms.filter(s => !isRespiratory(s));
+    const respiratorySyms = syms.filter(s => isRespiratory(s));
+
+    function makeSymptomItem(s) {
+        const label = s.replace(/_/g, ' ');
+        const isSelected = selected.has(s);
+        const borderCls = isSelected ? 'border-secondary-fixed/50 bg-secondary-fixed/5' : 'border-outline-variant/15 bg-background/40';
+        
+        return `
+            <div data-sym="${s}" class="symptom-item flex items-center justify-between gap-3 p-3 rounded-lg border ${borderCls} cursor-pointer hover:bg-surface-container-highest/40 hover:border-secondary-fixed/30 transition-all" onclick="toggleSymptom('${s}')">
+                <div class="flex items-center gap-3 pointer-events-none">
+                    <div class="w-4 h-4 rounded border flex items-center justify-center transition-all ${isSelected ? 'bg-secondary-fixed border-secondary-fixed' : 'border-outline-variant/40 bg-transparent'}">
+                        ${isSelected ? '<span class="material-symbols-outlined text-[12px] text-black font-bold">check</span>' : ''}
+                    </div>
+                    <span class="text-xs font-medium text-on-surface capitalize">${label}</span>
+                </div>
+            </div>`;
+    }
+
+    generalCol.innerHTML = generalSyms.length
+        ? generalSyms.map(makeSymptomItem).join('')
+        : '<div class="text-center py-6 text-on-surface-variant/40 text-xs">No matching general symptoms found.</div>';
+
+    respiratoryCol.innerHTML = respiratorySyms.length
+        ? respiratorySyms.map(makeSymptomItem).join('')
+        : '<div class="text-center py-6 text-on-surface-variant/40 text-xs">No matching respiratory symptoms found.</div>';
+}
+
+// ── Toggle symptom selection reliably ──
+function toggleSymptom(sym) {
+    if (selected.has(sym)) {
+        selected.delete(sym);
+    } else {
+        selected.add(sym);
+    }
+    updateUIState();
+}
+
+// ── Sync Visuals and state ──
+function updateUIState() {
+    // 1. Update active chips bar
+    const tagsEl = document.getElementById('selected-tags');
+    const totalCountEl = document.getElementById('selected-count');
+    
+    totalCountEl.textContent = `${selected.size} Selected`;
+
+    if (selected.size === 0) {
+        tagsEl.innerHTML = '<span class="text-on-surface-variant/60 text-sm italic" id="tags-hint">No symptoms selected. Choose indicators below to populate clinical profile.</span>';
+    } else {
+        tagsEl.innerHTML = [...selected].map(s => `
+            <div class="flex items-center gap-1.5 bg-secondary-fixed/15 text-secondary-fixed border border-secondary-fixed/20 px-3 py-1 rounded-full text-xs font-medium">
+                <span class="capitalize">${s.replace(/_/g,' ')}</span>
+                <span class="material-symbols-outlined text-[14px] cursor-pointer hover:text-error transition-colors" onclick="event.stopPropagation(); removeSymptom('${s}')">close</span>
+            </div>`).join('');
+    }
+
+    // 2. Enable/disable Trigger button
+    document.getElementById('analyse-btn').disabled = selected.size < 2;
+
+    // 3. Update status/visual state of checkboxes without rebuilding DOM elements!
+    document.querySelectorAll('.symptom-item').forEach(el => {
+        const sym = el.dataset.sym;
+        const isSelected = selected.has(sym);
+        const checkContainer = el.querySelector('.w-4');
+        
+        if (isSelected) {
+            el.classList.add('border-secondary-fixed/50', 'bg-secondary-fixed/5');
+            el.classList.remove('border-outline-variant/15', 'bg-background/40');
+            checkContainer.classList.add('bg-secondary-fixed', 'border-secondary-fixed');
+            checkContainer.classList.remove('border-outline-variant/40');
+            checkContainer.innerHTML = '<span class="material-symbols-outlined text-[12px] text-black font-bold">check</span>';
+        } else {
+            el.classList.remove('border-secondary-fixed/50', 'bg-secondary-fixed/5');
+            el.classList.add('border-outline-variant/15', 'bg-background/40');
+            checkContainer.classList.remove('bg-secondary-fixed', 'border-secondary-fixed');
+            checkContainer.classList.add('border-outline-variant/40');
+            checkContainer.innerHTML = '';
+        }
+    });
+}
+
+// ── Remove symptom chip ──
+function removeSymptom(sym) {
+    selected.delete(sym);
+    updateUIState();
+}
+
+// ── Instant input filter without state loss ──
+document.getElementById('symptom-search').addEventListener('input', function() {
+    const q = this.value.toLowerCase().replace(/_/g, ' ');
+    
+    document.querySelectorAll('.symptom-item').forEach(el => {
+        const symLabel = el.dataset.sym.toLowerCase().replace(/_/g, ' ');
+        if (symLabel.includes(q)) {
+            el.style.display = 'flex';
+        } else {
+            el.style.display = 'none';
+        }
+    });
+    
+    // Check if sections are completely empty
+    const generalCol = document.getElementById('general-symptoms-col');
+    const respCol = document.getElementById('respiratory-symptoms-col');
+    
+    toggleColumnEmptyState(generalCol);
+    toggleColumnEmptyState(respCol);
+});
+
+function toggleColumnEmptyState(col) {
+    const items = col.querySelectorAll('.symptom-item');
+    let visibleCount = 0;
+    items.forEach(it => {
+        if (it.style.display !== 'none') visibleCount++;
+    });
+    
+    let existingMsg = col.querySelector('.empty-msg');
+    if (visibleCount === 0) {
+        if (!existingMsg) {
+            const div = document.createElement('div');
+            div.className = 'empty-msg text-center py-6 text-on-surface-variant/40 text-xs';
+            div.textContent = 'No matching symptoms.';
+            col.appendChild(div);
+        }
+    } else {
+        if (existingMsg) existingMsg.remove();
+    }
+}
+
+// ── Run AI Classifier ──
+async function analyse() {
+    const spinner = document.getElementById('spinner');
+    const emptyState = document.getElementById('empty-state');
+    const resultsSection = document.getElementById('results-section');
+
+    emptyState.style.display = 'none';
+    resultsSection.classList.add('hidden');
+    resultsSection.innerHTML = '';
+    spinner.classList.remove('hidden');
+
+    try {
+        const res = await fetch('/api/predict', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ symptoms: [...selected] })
+        });
+        const data = await res.json();
+
+        spinner.classList.add('hidden');
+
+        if (!res.ok || data.error) {
+            resultsSection.classList.remove('hidden');
+            resultsSection.innerHTML = `<div class="p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-semibold">${data.error || 'Diagnostic calculation error.'}</div>`;
+            return;
+        }
+        
+        activePredictionData = data.predictions;
+        resultsSection.classList.remove('hidden');
+        renderResults(data);
+        
+        // Load the guidelines of the top #1 predicted disease automatically
+        if (data.predictions && data.predictions.length > 0) {
+            loadDiseaseGuidelines(data.predictions[0].disease);
+        }
+    } catch(e) {
+        spinner.classList.add('hidden');
+        resultsSection.classList.remove('hidden');
+        resultsSection.innerHTML = '<div class="p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-semibold">Endpoint offline. Verify active Flask server deployment.</div>';
+    }
+}
+
+// ── Render classification outcomes list ──
+function renderResults(data) {
+    const sec = document.getElementById('results-section');
+    const severityClasses = {
+        Emergency: 'bg-red-500/20 text-red-300 border border-red-500/30',
+        High: 'bg-amber-500/20 text-amber-300 border border-amber-500/30',
+        Chronic: 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30',
+        Moderate: 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30',
+        Mild: 'bg-blue-500/20 text-blue-300 border border-blue-500/30'
+    };
+
+    sec.innerHTML = data.predictions.map((p, i) => {
+        const sevClass = severityClasses[p.severity] || severityClasses.Mild;
+        const borderAccent = i === 0 ? 'border-l-4 border-l-secondary-fixed' : 'border-l border-l-outline-variant/30';
+        
+        return `
+        <div onclick="loadDiseaseGuidelines('${p.disease}')" class="prediction-card p-4 rounded-lg glass-card ${borderAccent} cursor-pointer hover:border-secondary-fixed/50 hover:bg-secondary-fixed/5 transition-all flex flex-col gap-3 group">
+            <div class="flex justify-between items-start">
+                <div class="flex flex-col gap-1">
+                    <div class="flex items-center gap-2">
+                        <span class="text-sm font-bold text-white group-hover:text-secondary-fixed transition-colors">${p.disease}</span>
+                        <span class="text-[9px] uppercase tracking-wider font-bold px-2 py-0.5 rounded ${sevClass}">${p.severity}</span>
+                    </div>
+                    <span class="text-xs text-on-surface-variant/75 capitalize">${p.description}</span>
+                </div>
+                <div class="flex flex-col items-end">
+                    <span class="text-lg font-black text-secondary-fixed">${p.probability}%</span>
+                    <span class="text-[9px] text-on-surface-variant/50 font-bold uppercase tracking-widest">Match Probability</span>
+                </div>
+            </div>
+            
+            <!-- Progress Bar -->
+            <div class="w-full h-1.5 bg-background rounded-full overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-secondary-fixed to-primary rounded-full transition-all duration-1000" style="width: 0%" data-w="${p.probability}"></div>
+            </div>
+            
+            <!-- Matched list -->
+            ${p.matched_symptoms.length ? `
+            <div class="flex flex-wrap items-center gap-1.5">
+                <span class="text-[10px] text-on-surface-variant/55 font-bold uppercase tracking-widest mr-1">Matching Symptoms:</span>
+                ${p.matched_symptoms.map(s => `<span class="text-[9px] bg-white/5 border border-white/10 px-1.5 py-0.5 rounded text-on-surface capitalize">${s.replace(/_/g,' ')}</span>`).join('')}
+            </div>` : ''}
+        </div>`;
+    }).join('');
+
+    // Trigger progressive animated transitions
+    setTimeout(() => {
+        document.querySelectorAll('[data-w]').forEach(bar => {
+            bar.style.width = bar.dataset.w + '%';
+        });
+    }, 50);
+
+    // AI Disclaimer
+    if (data.disclaimer) {
+        sec.innerHTML += `
+            <div class="text-[10px] text-on-surface-variant/50 border-t border-outline-variant/15 pt-3 flex items-start gap-1">
+                <span class="material-symbols-outlined text-xs text-amber-500 flex-shrink-0 mt-0.5">info</span>
+                <span>${data.disclaimer}</span>
+            </div>`;
+    }
+}
+
+// ── Dynamic Clinical Guidelines Engine ──
+function loadDiseaseGuidelines(diseaseName) {
+    const contentPanel = document.getElementById('clinical-ref-content');
+    
+    // Find disease metadata in active outcomes or backup static catalog
+    let details = activePredictionData ? activePredictionData.find(d => d.disease === diseaseName) : null;
+    let catalogRef = diseaseCatalog.find(d => d.name === diseaseName);
+    
+    if (!details && catalogRef) {
+        details = {
+            disease: catalogRef.name,
+            severity: catalogRef.severity,
+            description: catalogRef.description,
+            action: 'Examine symptom progression and evaluate diagnostic logs.'
+        };
+    }
+
+    if (!details) {
+        contentPanel.innerHTML = `
+            <div class="text-center py-6 text-on-surface-variant/40 text-xs">
+                Detailed metrics for ${diseaseName} unavailable in local database.
+            </div>`;
+        return;
+    }
+
+    // Assign visual severity accent colors
+    const severityAccents = {
+        Emergency: 'border-red-500/40 bg-red-500/5 text-red-300',
+        High: 'border-amber-500/40 bg-amber-500/5 text-amber-300',
+        Chronic: 'border-indigo-500/40 bg-indigo-500/5 text-indigo-300',
+        Moderate: 'border-emerald-500/40 bg-emerald-500/5 text-emerald-300',
+        Mild: 'border-blue-500/40 bg-blue-500/5 text-blue-300'
+    };
+    
+    const accentCls = severityAccents[details.severity] || severityAccents.Mild;
+    
+    // Create standard procedural checks based on severity
+    let protocols = [];
+    let clinicalRecs = [];
+    
+    if (details.severity === 'Emergency' || details.severity === 'High') {
+        protocols = [
+            'Initiate direct droplet / isolation protocols.',
+            'Continuous monitoring of blood oxygen saturation (SpO2).',
+            'Ready acute triage workspace.'
+        ];
+        clinicalRecs = [
+            'Order immediate molecular assay panel / diagnostic tests.',
+            details.action || 'Seek clinical consultation immediately.'
+        ];
+    } else if (details.severity === 'Chronic') {
+        protocols = [
+            'Perform secondary systemic organ assessment.',
+            'Review active long-term therapeutic chart.'
+        ];
+        clinicalRecs = [
+            'Initiate specialist referral clinic dispatch.',
+            details.action || 'Establish dietary guidelines and routine monitoring.'
+        ];
+    } else {
+        protocols = [
+            'Recommend home-isolation and clinical recovery rest.',
+            'Maintain dynamic hydration and temperature log sheets.'
+        ];
+        clinicalRecs = [
+            details.action || 'Symptomatic supportive treatment guidelines.',
+            'Re-evaluate clinical status if presentation persists > 72 hours.'
+        ];
+    }
+
+    // Toggle styling of selected active card borders
+    document.querySelectorAll('.prediction-card').forEach(el => {
+        const title = el.querySelector('span.text-sm').textContent;
+        if (title === diseaseName) {
+            el.classList.add('border-secondary-fixed', 'bg-secondary-fixed/5');
+            el.classList.remove('bg-surface-container-high/30');
+        } else {
+            el.classList.remove('border-secondary-fixed', 'bg-secondary-fixed/5');
+        }
+    });
+
+    contentPanel.parentElement.classList.add('glow-cyan');
+    setTimeout(() => {
+        contentPanel.parentElement.classList.remove('glow-cyan');
+    }, 400);
+
+    contentPanel.innerHTML = `
+        <div class="flex flex-col gap-4 text-left">
+            <div class="flex items-center justify-between border-b border-outline-variant/15 pb-3">
+                <div class="flex flex-col">
+                    <span class="text-xs text-on-surface-variant font-bold uppercase tracking-widest">Active Reference Profile</span>
+                    <h4 class="text-base font-black text-white mt-1">${details.disease}</h4>
+                </div>
+                <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded border ${accentCls}">${details.severity} Priority</span>
+            </div>
+            
+            <div>
+                <span class="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest block mb-1.5 text-primary">Diagnostic Summary</span>
+                <p class="text-xs text-on-surface-variant/90 leading-relaxed">${details.description || 'Clinical metrics mapping is active for this condition class.'}</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-1">
+                <div>
+                    <span class="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest block mb-2 text-secondary-fixed">Required Precautions</span>
+                    <ul class="space-y-1.5">
+                        ${protocols.map(p => `
+                            <li class="flex items-start gap-1.5 text-xs text-on-surface/85">
+                                <span class="material-symbols-outlined text-[14px] text-secondary-fixed mt-0.5 flex-shrink-0">check_circle</span>
+                                <span>${p}</span>
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+                <div>
+                    <span class="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest block mb-2 text-primary">AI Action Guidelines</span>
+                    <ul class="space-y-1.5">
+                        ${clinicalRecs.map(r => `
+                            <li class="flex items-start gap-1.5 text-xs text-on-surface/85">
+                                <span class="material-symbols-outlined text-[14px] text-primary mt-0.5 flex-shrink-0">lightbulb</span>
+                                <span>${r}</span>
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+            </div>
+        </div>`;
+}
+
+// Initialize active components
+init();
+</script>
+</body>
+</html>
