@@ -6,29 +6,29 @@
   <title>{{ t('site_title') }}</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
   <style>
-    body { background: #020617; color: #e2e8f0; font-family: Inter, sans-serif; }
-    .chat-scroll { scrollbar-width: thin; scrollbar-color: rgba(148,163,184,0.35) transparent; }
+    body { background: #000000; color: #e2e8f0; font-family: Inter, sans-serif; }
+    .chat-scroll { scrollbar-width: thin; scrollbar-color: rgba(34,197,94,0.3) transparent; }
     .chat-scroll::-webkit-scrollbar { width: 8px; }
     .chat-scroll::-webkit-scrollbar-track { background: transparent; }
-    .chat-scroll::-webkit-scrollbar-thumb { background: rgba(148,163,184,0.35); border-radius: 9999px; }
+    .chat-scroll::-webkit-scrollbar-thumb { background: rgba(34,197,94,0.3); border-radius: 9999px; }
   </style>
 </head>
 <body class="min-h-screen">
   <div class="max-w-6xl mx-auto px-4 py-6">
     <header class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between mb-6">
       <div>
-        <p class="text-sm uppercase tracking-[0.3em] text-cyan-300/80">{{ t('health_assistant_label') }}</p>
+        <p class="text-sm uppercase tracking-[0.3em] text-green-400/80">{{ t('health_assistant_label') }}</p>
         <h1 class="mt-2 text-3xl font-semibold text-white">{{ t('hello_health_assistant') }}</h1>
         <p class="mt-2 max-w-2xl text-sm text-slate-300">{{ t('chat_prompt') }}</p>
       </div>
       <div class="flex flex-wrap gap-3">
         <a href="/" class="inline-flex items-center gap-2 rounded-full border border-slate-700 bg-slate-900 px-4 py-2 text-sm text-slate-100 hover:bg-slate-800">{{ t('back_to_home') }}</a>
-        <a href="/app" class="inline-flex items-center gap-2 rounded-full border border-cyan-400/20 bg-cyan-500/10 px-4 py-2 text-sm text-cyan-200 hover:bg-cyan-500/15">{{ t('diagnostic_console') }}</a>
+        <a href="/app" class="inline-flex items-center gap-2 rounded-full border border-green-400/20 bg-green-500/10 px-4 py-2 text-sm text-green-300 hover:bg-green-500/15">{{ t('diagnostic_console') }}</a>
       </div>
     </header>
 
     <div class="grid gap-6 lg:grid-cols-[1.8fr_1fr]">
-      <section class="rounded-3xl border border-slate-800 bg-slate-950/90 p-6 shadow-xl shadow-cyan-500/5">
+      <section class="rounded-3xl border border-slate-800 bg-slate-950/90 p-6 shadow-xl shadow-green-500/5">
         <div class="mb-5 rounded-3xl bg-slate-900/80 p-5">
           <h2 class="text-xl font-semibold text-white">{{ t('talk_to_assistant') }}</h2>
           <p class="mt-2 text-sm text-slate-400">{{ t('chat_prompt') }}</p>
@@ -41,8 +41,8 @@
         </div>
 
         <form id="chat-form" class="mt-5 flex gap-3">
-          <input id="chat-input" type="text" placeholder="{{ t('ask_health_question') }}" class="min-w-0 flex-1 rounded-3xl border border-slate-800 bg-slate-900 px-4 py-3 text-sm text-slate-100 outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/20" />
-          <button type="submit" class="rounded-3xl bg-cyan-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400">{{ t('send') }}</button>
+          <input id="chat-input" type="text" placeholder="{{ t('ask_health_question') }}" class="min-w-0 flex-1 rounded-3xl border border-slate-800 bg-slate-900 px-4 py-3 text-sm text-slate-100 outline-none focus:border-green-400 focus:ring-2 focus:ring-green-500/20" />
+          <button type="submit" class="rounded-3xl bg-green-500 px-5 py-3 text-sm font-semibold text-black transition hover:bg-green-400">{{ t('send') }}</button>
         </form>
       </section>
 
@@ -55,12 +55,12 @@
             <li>• If you feel urgent warning signs, the assistant will recommend seeing a doctor.</li>
           </ul>
         </div>
-        <div class="rounded-3xl bg-[#07101b] p-5">
+        <div class="rounded-3xl bg-[#07100b] p-5">
           <h3 class="text-lg font-semibold text-white">{{ t('suggested_prompts') }}</h3>
           <div class="mt-4 grid gap-3 text-sm text-slate-300">
-            <button type="button" data-sample="I have a sore throat and fever, should I see a doctor?" class="w-full rounded-2xl border border-slate-700 bg-slate-900 px-4 py-3 text-left hover:border-cyan-400">I have a sore throat and fever, should I see a doctor?</button>
-            <button type="button" data-sample="What precautions should I take for cough and congestion?" class="w-full rounded-2xl border border-slate-700 bg-slate-900 px-4 py-3 text-left hover:border-cyan-400">What precautions should I take for cough and congestion?</button>
-            <button type="button" data-sample="I feel dizzy and weak, what should I do?" class="w-full rounded-2xl border border-slate-700 bg-slate-900 px-4 py-3 text-left hover:border-cyan-400">I feel dizzy and weak, what should I do?</button>
+            <button type="button" data-sample="I have a sore throat and fever, should I see a doctor?" class="w-full rounded-2xl border border-slate-700 bg-slate-900 px-4 py-3 text-left hover:border-green-400">I have a sore throat and fever, should I see a doctor?</button>
+            <button type="button" data-sample="What precautions should I take for cough and congestion?" class="w-full rounded-2xl border border-slate-700 bg-slate-900 px-4 py-3 text-left hover:border-green-400">What precautions should I take for cough and congestion?</button>
+            <button type="button" data-sample="I feel dizzy and weak, what should I do?" class="w-full rounded-2xl border border-slate-700 bg-slate-900 px-4 py-3 text-left hover:border-green-400">I feel dizzy and weak, what should I do?</button>
           </div>
         </div>
       </aside>
@@ -77,7 +77,7 @@
       const wrapper = document.createElement('div');
       wrapper.className = sender === 'user' ? 'flex justify-end' : 'flex justify-start';
       const bubble = document.createElement('div');
-      bubble.className = sender === 'user' ? 'max-w-[85%] rounded-3xl bg-cyan-500/15 p-4 text-sm text-slate-100' : 'max-w-[85%] rounded-3xl bg-slate-800/90 p-4 text-sm text-slate-200';
+      bubble.className = sender === 'user' ? 'max-w-[85%] rounded-3xl bg-green-500/15 p-4 text-sm text-slate-100' : 'max-w-[85%] rounded-3xl bg-slate-800/90 p-4 text-sm text-slate-200';
       bubble.textContent = text;
       wrapper.appendChild(bubble);
       chatWindow.appendChild(wrapper);

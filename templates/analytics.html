@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:wght@100..900&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
     <style>
         body {
-            background-color: #0b0b0c;
+            background-color: #000000;
             color: #e5e2e3;
             -webkit-font-smoothing: antialiased;
         }
@@ -17,13 +17,13 @@
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
         .glass-card {
-            background: rgba(18, 18, 20, 0.75);
+            background: rgba(10, 10, 10, 0.92);
             backdrop-filter: blur(18px);
-            border: 1px solid rgba(60, 73, 78, 0.22);
+            border: 1px solid rgba(34, 197, 94, 0.1);
         }
         .summary-badge {
-            background: rgba(38, 254, 220, 0.08);
-            color: #26fedc;
+            background: rgba(34, 197, 94, 0.1);
+            color: #22c55e;
         }
         .chart-card canvas {
             min-height: 240px;
@@ -37,12 +37,12 @@
                     colors: {
                         "on-surface-variant": "#a3b2b8",
                         "surface-container-highest": "#27272a",
-                        "secondary-fixed": "#26fedc",
-                        "on-secondary-container": "#006a5a",
+                        "secondary-fixed": "#22c55e",
+                        "on-secondary-container": "#14532d",
                         "on-background": "#e5e2e3",
-                        "background": "#0b0b0c",
-                        "primary": "#a4e6ff",
-                        "surface": "#121214",
+                        "background": "#000000",
+                        "primary": "#4ade80",
+                        "surface": "#0a0a0a",
                         "error": "#ffb4ab",
                         "on-surface": "#e5e2e3",
                         "outline-variant": "#334155"
@@ -316,12 +316,12 @@ function renderPredictionTrend(data) {
             datasets: [{
                 label: 'Predictions',
                 data: counts,
-                borderColor: '#22d3ee',
-                backgroundColor: 'rgba(38, 254, 220, 0.18)',
+                borderColor: '#22c55e',
+                backgroundColor: 'rgba(34, 197, 94, 0.15)',
                 fill: true,
                 tension: 0.35,
                 pointRadius: 3,
-                pointBackgroundColor: '#22d3ee'
+                pointBackgroundColor: '#22c55e'
             }]
         },
         options: {
@@ -346,8 +346,8 @@ function renderSymptomFrequency(data) {
             datasets: [{
                 label: 'Occurrences',
                 data: counts,
-                backgroundColor: 'rgba(165, 243, 252, 0.85)',
-                borderColor: '#22d3ee',
+                backgroundColor: 'rgba(134, 239, 172, 0.85)',
+                borderColor: '#22c55e',
                 borderWidth: 1
             }]
         },
@@ -378,8 +378,8 @@ function renderCoverageChart(data) {
             datasets: [{
                 label: 'Symptom count',
                 data: counts,
-                backgroundColor: labels.map((_, index) => `rgba(56, 189, 248, ${0.9 - index * 0.07})`),
-                borderColor: '#38bdf8',
+                backgroundColor: labels.map((_, index) => `rgba(34, 197, 94, ${0.9 - index * 0.07})`),
+                borderColor: '#22c55e',
                 borderWidth: 1
             }]
         },
@@ -405,12 +405,12 @@ function renderRealtimeChart(data) {
             datasets: [{
                 label: 'Realtime activity',
                 data: counts,
-                borderColor: '#f97316',
-                backgroundColor: 'rgba(249, 115, 22, 0.2)',
+                borderColor: '#22c55e',
+                backgroundColor: 'rgba(34, 197, 94, 0.15)',
                 fill: true,
                 tension: 0.4,
                 pointRadius: 2,
-                pointBackgroundColor: '#f97316'
+                pointBackgroundColor: '#22c55e'
             }]
         },
         options: {

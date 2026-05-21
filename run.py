@@ -45,7 +45,7 @@ def retrain_if_needed():
 
 if __name__ == '__main__':
     print("=" * 60)
-    print("  🧬  MediScan — AI Disease Classifier")
+    print("  [MediScan] — AI Disease Classifier")
     print("=" * 60)
 
     check_and_install()

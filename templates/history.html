@@ -8,13 +8,13 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
     body {
-      background: #050816;
+      background: #000000;
       color: #e2e8f0;
       min-height: 100vh;
     }
     .glass-panel {
-      background: rgba(15, 23, 42, 0.86);
-      border: 1px solid rgba(148, 163, 184, 0.12);
+      background: rgba(10, 10, 10, 0.92);
+      border: 1px solid rgba(34, 197, 94, 0.1);
       backdrop-filter: blur(18px);
     }
   </style>
@@ -23,14 +23,14 @@
   <div class="max-w-7xl mx-auto px-4 py-8">
     <header class="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
       <div>
-        <p class="text-sm uppercase tracking-[0.35em] text-cyan-300/80">{{ t('prediction_history') }}</p>
+        <p class="text-sm uppercase tracking-[0.35em] text-green-400/80">{{ t('prediction_history') }}</p>
         <h1 class="mt-3 text-4xl font-semibold text-white">{{ t('saved_medical_records') }}</h1>
         <p class="mt-2 text-sm text-slate-400">{{ t('review_past_predictions') }}</p>
       </div>
       <div class="flex flex-wrap gap-3">
-        <a href="/app" class="rounded-2xl border border-slate-700 bg-slate-900 px-4 py-3 text-sm text-slate-100 hover:border-cyan-400">{{ t('diagnostic_console') }}</a>
-        <a href="/analytics" class="rounded-2xl border border-slate-700 bg-slate-900 px-4 py-3 text-sm text-slate-100 hover:border-cyan-400">Analytics</a>
-        <a href="/logout" class="rounded-2xl border border-slate-700 bg-slate-900 px-4 py-3 text-sm text-slate-100 hover:border-cyan-400">{{ t('logout') }}</a>
+        <a href="/app" class="rounded-2xl border border-slate-700 bg-slate-900 px-4 py-3 text-sm text-slate-100 hover:border-green-400">{{ t('diagnostic_console') }}</a>
+        <a href="/analytics" class="rounded-2xl border border-slate-700 bg-slate-900 px-4 py-3 text-sm text-slate-100 hover:border-green-400">Analytics</a>
+        <a href="/logout" class="rounded-2xl border border-slate-700 bg-slate-900 px-4 py-3 text-sm text-slate-100 hover:border-green-400">{{ t('logout') }}</a>
       </div>
     </header>
 
@@ -59,7 +59,7 @@
               <p class="text-xs uppercase tracking-[0.25em] text-slate-400">Trend</p>
               <h2 class="text-xl font-semibold text-white">Prediction timeline</h2>
             </div>
-            <span class="inline-flex items-center gap-2 rounded-full border border-cyan-500/20 bg-cyan-500/10 px-4 py-2 text-xs uppercase text-cyan-300">Live trend analysis</span>
+            <span class="inline-flex items-center gap-2 rounded-full border border-green-500/20 bg-green-500/10 px-4 py-2 text-xs uppercase text-green-300">Live trend analysis</span>
           </div>
           <div class="mt-6 h-80">
             <canvas id="history-trend-chart" class="h-full"></canvas>
@@ -132,14 +132,14 @@
 
       historyContainer.innerHTML = items.map(item => {
         return `
-          <article class="glass-panel rounded-3xl border border-slate-800 p-6 transition-shadow duration-200 hover:shadow-xl hover:shadow-cyan-500/10">
+          <article class="glass-panel rounded-3xl border border-slate-800 p-6 transition-shadow duration-200 hover:shadow-xl hover:shadow-green-500/10">
             <div class="flex flex-col gap-4 lg:flex-row lg:justify-between lg:items-start">
               <div class="min-w-0 flex-1">
                 <p class="text-xs uppercase tracking-[0.25em] text-slate-500">${new Date(item.created_at).toLocaleString()}</p>
                 <h2 class="mt-3 text-2xl font-semibold text-white">${item.top_disease || 'Prediction Record'}</h2>
                 <p class="mt-2 text-sm text-slate-400">Severity: ${item.severity || 'Unknown'} • Specialist: ${item.specialist || 'General Physician'}</p>
               </div>
-              <div class="rounded-3xl bg-slate-950 px-4 py-2 text-xs uppercase tracking-[0.3em] text-cyan-300">${item.probability ? item.probability + '% match' : 'No score'}</div>
+              <div class="rounded-3xl bg-slate-950 px-4 py-2 text-xs uppercase tracking-[0.3em] text-green-400">${item.probability ? item.probability + '% match' : 'No score'}</div>
             </div>
             <div class="mt-6 grid gap-4 lg:grid-cols-2">
               <div>
@@ -171,12 +171,12 @@
           datasets: [{
             label: 'Predictions',
             data: counts,
-            borderColor: '#22d3ee',
-            backgroundColor: 'rgba(34, 211, 238, 0.18)',
+            borderColor: '#22c55e',
+            backgroundColor: 'rgba(34, 197, 94, 0.15)',
             fill: true,
             tension: 0.35,
             pointRadius: 3,
-            pointBackgroundColor: '#22d3ee'
+            pointBackgroundColor: '#22c55e'
           }]
         },
         options: {
@@ -229,7 +229,7 @@
     function renderSymptoms(items) {
       const wrapper = document.getElementById('top-symptoms');
       wrapper.innerHTML = items.length
-        ? items.map(item => `<div class="rounded-2xl border border-slate-800 bg-slate-950 px-4 py-3 text-sm text-slate-200">${item.symptom} <span class="ml-2 text-cyan-300">(${item.count})</span></div>`).join('')
+        ? items.map(item => `<div class="rounded-2xl border border-slate-800 bg-slate-950 px-4 py-3 text-sm text-slate-200">${item.symptom} <span class="ml-2 text-green-400">(${item.count})</span></div>`).join('')
         : '<div class="rounded-2xl border border-slate-800 bg-slate-950 px-4 py-3 text-sm text-slate-400">No trend data available yet.</div>';
     }
 

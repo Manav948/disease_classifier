@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:wght@100..900&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
     <style>
         body {
-            background-color: #0b0b0c;
+            background-color: #000000;
             color: #e5e2e3;
             -webkit-font-smoothing: antialiased;
         }
@@ -16,18 +16,18 @@
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
         .glass-card {
-            background: rgba(18, 18, 20, 0.7);
+            background: rgba(10, 10, 10, 0.85);
             backdrop-filter: blur(16px);
-            border: 1px solid rgba(60, 73, 78, 0.2);
+            border: 1px solid rgba(34, 197, 94, 0.1);
         }
         .glow-cyan {
-            box-shadow: 0 0 20px rgba(38, 254, 220, 0.15);
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.18);
         }
         ::-webkit-scrollbar {
             width: 6px;
         }
         ::-webkit-scrollbar-track {
-            background: #0b0b0c;
+            background: #000000;
         }
         ::-webkit-scrollbar-thumb {
             background: #27272a;
@@ -42,12 +42,12 @@
                     colors: {
                         "on-surface-variant": "#a3b2b8",
                         "surface-container-highest": "#27272a",
-                        "secondary-fixed": "#26fedc",
-                        "on-secondary-container": "#006a5a",
+                        "secondary-fixed": "#22c55e",
+                        "on-secondary-container": "#14532d",
                         "on-background": "#e5e2e3",
-                        "background": "#0b0b0c",
-                        "primary": "#a4e6ff",
-                        "surface": "#121214",
+                        "background": "#000000",
+                        "primary": "#4ade80",
+                        "surface": "#0a0a0a",
                         "error": "#ffb4ab",
                         "on-surface": "#e5e2e3",
                         "outline-variant": "#334155"
@@ -103,11 +103,6 @@
                 <span class="material-symbols-outlined text-sm">home</span>
                 <span>{{ t('back_to_home') }}</span>
             </a>
-            <div class="flex items-center gap-2 px-3 py-1 rounded-full border border-outline-variant/30 text-xs text-on-surface-variant">
-                {% for code, label in languages.items() %}
-                    <a href="{{ url_for('set_language', lang_code=code) }}" class="px-2 py-1 rounded-full {% if lang == code %}bg-secondary-fixed text-black{% else %}text-on-surface-variant hover:bg-white/10{% endif %}">{{ label }}</a>
-                {% endfor %}
-            </div>
         </div>
     </header>
 

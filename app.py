@@ -287,10 +287,16 @@ def init_db():
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             username TEXT UNIQUE NOT NULL,
+            email TEXT,
             password TEXT NOT NULL,
             created_at TEXT NOT NULL
         );
     ''')
+    # Add email column to existing DBs that don't have it yet
+    try:
+        cursor.execute('ALTER TABLE users ADD COLUMN email TEXT;')
+    except Exception:
+        pass
     conn.commit()
     conn.close()
 
@@ -324,8 +330,9 @@ def login():
 def register():
     if request.method == 'POST':
         username = request.form.get('username', '').strip().lower()
+        email    = request.form.get('email', '').strip().lower()
         password = request.form.get('password', '')
-        confirm = request.form.get('confirm', '')
+        confirm  = request.form.get('confirm', '')
 
         if not username or not password or not confirm:
             return render_template('register.html', error='All fields are required.')
@@ -334,8 +341,9 @@ def register():
 
         conn = get_db_connection()
         try:
-            conn.execute('INSERT INTO users (username, password, created_at) VALUES (?, ?, ?);', (
+            conn.execute('INSERT INTO users (username, email, password, created_at) VALUES (?, ?, ?, ?);', (
                 username,
+                email,
                 generate_password_hash(password),
                 datetime.utcnow().isoformat()
             ))
@@ -835,6 +843,7 @@ def generate_report():
 
 
 if __name__ == '__main__':
+    init_db()  # Ensure DB tables exist on every startup
     print("=" * 60)
     print("  Disease Classifier — Running at http://localhost:5000")
     print("=" * 60)
