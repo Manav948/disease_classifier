@@ -13,6 +13,7 @@ REQUIRED = {
     'numpy': 'numpy',
     'scipy': 'scipy',
     'joblib': 'joblib',
+    'reportlab': 'reportlab',
 }
 
 def check_and_install():
@@ -50,7 +51,9 @@ if __name__ == '__main__':
     check_and_install()
     retrain_if_needed()
 
-    from app import app
+    import app as app_module
+    app_module.init_db()
+    app = app_module.app
     print("🌐 Starting server at: http://localhost:5000")
     print("   Press CTRL+C to stop\n")
     app.run(debug=False, port=5000, host='0.0.0.0')

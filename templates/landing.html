@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 
-<html class="dark" lang="en">
+<html class="dark" lang="{{ lang }}">
 
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>MediScan - AI-Powered Disease Prediction</title>
+    <title>{{ t('site_title') }}</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
@@ -178,28 +178,32 @@
         </nav>
         <div class="flex items-center gap-md">
             <a href="/app"
-                class="bg-primary-container text-on-primary-container font-label-md text-label-md px-md py-2 rounded-full scale-95 active:scale-90 transition-transform font-bold inline-block">Get
-                Started</a>
+                class="bg-primary-container text-on-primary-container font-label-md text-label-md px-md py-2 rounded-full scale-95 active:scale-90 transition-transform font-bold inline-block">{{ t('run_diagnostic_analysis') }}</a>
+            <div class="hidden md:flex items-center gap-3 text-xs text-on-surface-variant">
+                <span>{{ t('choose_language') }}:</span>
+                {% for code, label in languages.items() %}
+                    <a href="{{ url_for('set_language', lang_code=code) }}" class="font-semibold {{ 'text-primary' if lang == code else 'text-on-surface-variant hover:text-primary' }}">{{ label }}</a>{% if not loop.last %}<span class="opacity-50">|</span>{% endif %}
+                {% endfor %}
+            </div>
         </div>
     </header>
     <main class="mt-[120px]">
         <!-- Hero Section -->
         <section class="max-w-[1200px] mx-auto px-margin py-xl flex flex-col items-center text-center">
             <h1 class="font-headline-xl text-headline-xl mb-md max-w-4xl text-gradient">
-                AI-powered disease prediction. Analyze symptoms intelligently.
+                {{ t('hero_title') }}
             </h1>
             <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mb-lg">
-                Leveraging advanced Random Forest architectures to provide clinical-grade symptom analysis and
-                probability-based diagnostic support in milliseconds.
+                {{ t('hero_subtitle') }}
             </p>
             <div class="flex flex-wrap justify-center gap-md mb-xl">
                 <a href="/app"
                     class="bg-gradient-to-r from-primary-container to-secondary-container text-on-primary-container font-headline-md px-xl py-md rounded-md font-bold shadow-lg shadow-primary-container/20 transition-all hover:scale-[1.02] inline-block">
-                    Start Analysis
+                    {{ t('run_diagnostic_analysis') }}
                 </a>
                 <button
                     class="border border-outline-variant text-on-surface font-headline-md px-xl py-md rounded-md hover:bg-surface-variant/30 transition-all">
-                    View Disease Database
+                    {{ t('view_disease_database') }}
                 </button>
             </div>
             <!-- Futuristic Dashboard Preview -->

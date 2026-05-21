@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html class="dark" lang="en">
+<html class="dark" lang="{{ lang }}">
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>MediScan AI — Diagnostic Dashboard</title>
+    <title>{{ t('site_title') }}</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:wght@100..900&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
     <style>
@@ -84,11 +84,30 @@
                 <span class="w-2 h-2 rounded-full bg-secondary-fixed animate-ping"></span>
                 <span class="text-xs font-semibold text-secondary-fixed">Random Forest Engine Active</span>
             </div>
+            {% if username %}
+            <div class="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full border border-outline-variant/20 text-xs text-on-surface-variant">
+                <span class="text-secondary-fixed">Hello,</span>
+                <strong class="text-white capitalize">{{ username }}</strong>
+            </div>
+            {% endif %}
             
+            <a href="/chat" class="flex items-center gap-2 px-4 py-1.5 rounded-lg bg-secondary-fixed/10 border border-secondary-fixed/20 text-sm text-secondary-fixed hover:text-white hover:border-white transition-all">
+                <span class="material-symbols-outlined text-sm">chat</span>
+                <span>{{ t('health_chat') }}</span>
+            </a>
+            <a href="/logout" class="flex items-center gap-2 px-4 py-1.5 rounded-lg border border-outline-variant/30 text-sm text-on-surface-variant hover:text-white hover:border-white transition-all">
+                <span class="material-symbols-outlined text-sm">logout</span>
+                <span>{{ t('logout') }}</span>
+            </a>
             <a href="/" class="flex items-center gap-2 px-4 py-1.5 rounded-lg border border-outline-variant/30 text-sm text-on-surface-variant hover:text-white hover:border-white transition-all">
                 <span class="material-symbols-outlined text-sm">home</span>
-                <span>Back to Home</span>
+                <span>{{ t('back_to_home') }}</span>
             </a>
+            <div class="flex items-center gap-2 px-3 py-1 rounded-full border border-outline-variant/30 text-xs text-on-surface-variant">
+                {% for code, label in languages.items() %}
+                    <a href="{{ url_for('set_language', lang_code=code) }}" class="px-2 py-1 rounded-full {% if lang == code %}bg-secondary-fixed text-black{% else %}text-on-surface-variant hover:bg-white/10{% endif %}">{{ label }}</a>
+                {% endfor %}
+            </div>
         </div>
     </header>
 
@@ -101,7 +120,7 @@
             <!-- Symptom Tag Panel -->
             <div class="glass-card rounded-xl p-5">
                 <div class="flex justify-between items-center mb-3">
-                    <h2 class="text-xs uppercase font-bold tracking-wider text-on-surface-variant">Active Clinical Presentation</h2>
+                    <h2 class="text-xs uppercase font-bold tracking-wider text-on-surface-variant">{{ t('active_clinical_presentation') }}</h2>
                     <span id="selected-count" class="text-xs bg-secondary-fixed/10 text-secondary-fixed px-2 py-0.5 rounded-full font-bold">0 Selected</span>
                 </div>
                 <div class="flex flex-wrap gap-2 items-center min-h-[44px]" id="selected-tags">
@@ -113,16 +132,20 @@
             <div class="glass-card rounded-xl p-5 flex flex-col">
                 <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-3 mb-6">
                     <div>
-                        <h3 class="font-headline font-bold text-lg text-white">Symptom Selector</h3>
-                        <p class="text-xs text-on-surface-variant">Identify and select all matching patient presentations.</p>
+                        <h3 class="font-headline font-bold text-lg text-white">{{ t('symptom_selector') }}</h3>
+                        <p class="text-xs text-on-surface-variant">{{ t('filter_clinical_indicators') }}</p>
                     </div>
                     
                     <!-- Search Input -->
                     <div class="relative w-full sm:w-64">
                         <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg">search</span>
-                        <input id="symptom-search" type="text" placeholder="Filter clinical indicators..."
-                            class="w-full pl-9 pr-4 py-1.5 bg-background border border-outline-variant/30 rounded-full text-xs text-white placeholder-on-surface-variant/50 focus:outline-none focus:border-secondary-fixed/50 focus:ring-1 focus:ring-secondary-fixed/30 transition-all" />
+                        <input id="symptom-search" type="text" placeholder="{{ t('filter_clinical_indicators') }}"
+                            class="w-full pl-9 pr-14 py-1.5 bg-background border border-outline-variant/30 rounded-full text-xs text-white placeholder-on-surface-variant/50 focus:outline-none focus:border-secondary-fixed/50 focus:ring-1 focus:ring-secondary-fixed/30 transition-all" />
+                        <button type="button" id="voice-btn" onclick="startVoiceRecognition()" class="absolute right-2 top-1/2 -translate-y-1/2 inline-flex h-8 w-8 items-center justify-center rounded-full border border-outline-variant/30 bg-surface text-on-surface hover:border-secondary-fixed hover:bg-secondary-fixed/10 transition-all">
+                            <span class="material-symbols-outlined text-base">mic</span>
+                        </button>
                     </div>
+                    <p id="voice-status" class="mt-2 text-[10px] text-on-surface-variant hidden"></p>
                 </div>
 
                 <!-- Double Column Symptom Workspace -->
@@ -132,7 +155,7 @@
                     <div>
                         <h4 class="text-xs font-bold uppercase tracking-widest text-primary mb-3 sticky top-0 bg-[#0d0d0f]/90 py-1 flex items-center gap-1.5">
                             <span class="material-symbols-outlined text-sm">medical_services</span>
-                            <span>General Presentation</span>
+                            <span>{{ t('general_presentation') }}</span>
                         </h4>
                         <div id="general-symptoms-col" class="space-y-2">
                             <div class="text-center py-8 text-on-surface-variant/40 text-xs">Loading symptoms...</div>
@@ -143,7 +166,7 @@
                     <div>
                         <h4 class="text-xs font-bold uppercase tracking-widest text-secondary-fixed mb-3 sticky top-0 bg-[#0d0d0f]/90 py-1 flex items-center gap-1.5">
                             <span class="material-symbols-outlined text-sm">air</span>
-                            <span>Respiratory & Chest</span>
+                            <span>{{ t('respiratory_chest') }}</span>
                         </h4>
                         <div id="respiratory-symptoms-col" class="space-y-2">
                             <div class="text-center py-8 text-on-surface-variant/40 text-xs">Loading symptoms...</div>
@@ -155,11 +178,11 @@
                 <!-- Predict Trigger Action -->
                 <div class="mt-6 border-t border-outline-variant/15 pt-5 flex items-center justify-between">
                     <p class="text-xs text-on-surface-variant max-w-sm">
-                        Select a minimum of <strong class="text-secondary-fixed font-bold">2 symptoms</strong> to enable precise ML engine classification.
+                        {{ t('select_minimum_symptoms') }} <strong class="text-secondary-fixed font-bold">2 {{ t('symptoms_lowercase') }}</strong> {{ t('to_enable_precise_ml') }}
                     </p>
                     <button id="analyse-btn" onclick="analyse()" disabled
                         class="bg-gradient-to-r from-secondary-fixed/80 to-primary/80 hover:from-secondary-fixed hover:to-primary text-black font-bold text-xs uppercase tracking-wider px-6 py-2.5 rounded-lg hover:brightness-110 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:brightness-100 transition-all glow-cyan duration-300">
-                        Run Diagnostic Analysis
+                        {{ t('run_diagnostic_analysis') }}
                     </button>
                 </div>
             </div>
@@ -173,39 +196,56 @@
             <div class="glass-card rounded-xl p-5 flex flex-col min-h-[300px]">
                 <h3 class="font-headline font-bold text-lg text-white mb-4 flex items-center gap-2">
                     <span class="material-symbols-outlined text-secondary-fixed">biotech</span>
-                    <span>AI Classification Outcome</span>
+                    <span>{{ t('ai_classification_outcome') }}</span>
                 </h3>
 
                 <!-- Spinner -->
                 <div id="spinner" class="hidden flex flex-col items-center justify-center py-16 gap-3">
                     <span class="material-symbols-outlined text-secondary-fixed text-4xl animate-spin">autorenew</span>
-                    <span class="text-xs text-on-surface-variant tracking-wider">Analyzing complex symptom clusters...</span>
+                    <span class="text-xs text-on-surface-variant tracking-wider">{{ t('analyzing_complex_symptom_clusters') }}</span>
+                </div>
+
+                <!-- Emergency Alert -->
+                <div id="emergency-alert" class="hidden mb-4 rounded-xl border border-red-500/20 bg-red-500/10 p-4 text-sm text-red-100">
+                    <div class="flex items-start gap-3">
+                        <span class="material-symbols-outlined text-red-300 mt-0.5">warning</span>
+                        <div>
+                            <p class="font-semibold text-red-100">{{ t('emergency_alert_title') }}</p>
+                            <p id="emergency-alert-message" class="text-xs text-red-100/90 mt-1"></p>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Empty State -->
                 <div id="empty-state" class="flex flex-col items-center justify-center text-center py-16 border border-dashed border-outline-variant/20 rounded-xl">
                     <span class="material-symbols-outlined text-5xl text-on-surface-variant/20 mb-3 animate-pulse">query_stats</span>
-                    <h4 class="text-sm font-semibold text-white">Diagnostic Output Pending</h4>
-                    <p class="text-xs text-on-surface-variant/60 max-w-xs mt-1">Select symptoms on the left and trigger prediction to initialize engine diagnostics.</p>
+                    <h4 class="text-sm font-semibold text-white">{{ t('diagnostic_output_pending') }}</h4>
+                    <p class="text-xs text-on-surface-variant/60 max-w-xs mt-1">{{ t('output_pending_desc') }}</p>
                 </div>
 
                 <!-- Results List -->
                 <div class="space-y-5 hidden" id="results-section"></div>
+    <div id="report-actions" class="hidden mt-4 flex justify-end">
+        <button id="download-report-btn" onclick="downloadReport()" class="bg-secondary-fixed/80 text-black uppercase tracking-widest text-xs font-bold px-5 py-2 rounded-lg hover:bg-secondary-fixed">{{ t('download_pdf_report') }}</button>
+    </div>
             </div>
 
             <!-- Dynamic Clinical Reference Panel -->
             <div class="glass-card rounded-xl p-5 flex flex-col min-h-[220px]" id="clinical-ref-panel">
                 <h3 class="font-headline font-bold text-lg text-white mb-4 flex items-center gap-2">
                     <span class="material-symbols-outlined text-primary">clinical_notes</span>
-                    <span>Clinical Reference Guidelines</span>
+                    <span>{{ t('clinical_reference_guidelines') }}</span>
                 </h3>
                 
                 <div id="clinical-ref-content" class="flex flex-col justify-center text-center py-8 border border-dashed border-outline-variant/20 rounded-xl">
                     <span class="material-symbols-outlined text-4xl text-on-surface-variant/20 mb-2">library_books</span>
-                    <h4 class="text-xs font-semibold text-on-surface-variant">No Disease Selected</h4>
-                    <p class="text-[11px] text-on-surface-variant/50 max-w-xs mx-auto mt-1">Click on any predicted disease above to view specialized medical guidelines here.</p>
+                    <h4 class="text-xs font-semibold text-on-surface-variant">{{ t('no_disease_selected') }}</h4>
+                    <p class="text-[11px] text-on-surface-variant/50 max-w-xs mx-auto mt-1">{{ t('click_predicted_disease') }}</p>
                 </div>
             </div>
+
+            <!-- Nearby Hospital Finder -->
+            <!-- Nearby Hospital Finder removed -->
 
         </section>
 
@@ -227,7 +267,78 @@
 let allSymptoms = [];
 let diseaseCatalog = [];
 let activePredictionData = null;
+let latestReportPayload = null;
 const selected = new Set();
+
+function startVoiceRecognition() {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const statusEl = document.getElementById('voice-status');
+    const voiceBtn = document.getElementById('voice-btn');
+    if (!SpeechRecognition) {
+        alert('Voice recognition is not supported in this browser. Use Chrome or Edge for this feature.');
+        return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'en-US';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.onstart = () => {
+        statusEl.textContent = 'Listening for symptoms...';
+        statusEl.classList.remove('hidden');
+        voiceBtn.classList.add('text-secondary-fixed');
+    };
+
+    recognition.onresult = event => {
+        const transcript = event.results[0][0].transcript.trim();
+        document.getElementById('symptom-search').value = transcript;
+        statusEl.textContent = `Recognized: ${transcript}`;
+        selectSpokenSymptoms(transcript);
+        document.getElementById('symptom-search').dispatchEvent(new Event('input'));
+    };
+
+    recognition.onerror = event => {
+        statusEl.textContent = 'Voice recognition failed. Please try again.';
+        console.error('SpeechRecognition error', event.error);
+    };
+
+    recognition.onend = () => {
+        voiceBtn.classList.remove('text-secondary-fixed');
+        setTimeout(() => {
+            if (statusEl.textContent.startsWith('Recognized:') || statusEl.textContent === 'Listening for symptoms...') {
+                statusEl.classList.add('hidden');
+            }
+        }, 2500);
+    };
+
+    recognition.start();
+}
+
+function selectSpokenSymptoms(text) {
+    const normalized = text.toLowerCase();
+    const matched = [];
+
+    allSymptoms.forEach(symptom => {
+        const label = symptom.replace(/_/g, ' ').toLowerCase();
+        if (normalized.includes(label)) {
+            selected.add(symptom);
+            matched.push(label);
+        }
+    });
+
+    if (matched.length === 0) {
+        const statusEl = document.getElementById('voice-status');
+        statusEl.textContent = 'No matching symptoms were detected from speech. Please try rephrasing.';
+        statusEl.classList.remove('hidden');
+        return;
+    }
+
+    updateUIState();
+    const statusEl = document.getElementById('voice-status');
+    statusEl.textContent = `Selected symptoms: ${matched.join(', ')}`;
+    statusEl.classList.remove('hidden');
+}
 
 // ── Init ──
 async function init() {
@@ -412,14 +523,30 @@ async function analyse() {
 
         spinner.classList.add('hidden');
 
+        const emergencyAlert = document.getElementById('emergency-alert');
+        emergencyAlert.classList.add('hidden');
+        emergencyAlert.querySelector('#emergency-alert-message').textContent = '';
+
         if (!res.ok || data.error) {
+            document.getElementById('report-actions').classList.add('hidden');
             resultsSection.classList.remove('hidden');
             resultsSection.innerHTML = `<div class="p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-semibold">${data.error || 'Diagnostic calculation error.'}</div>`;
             return;
         }
+
+        if (data.emergency_alert) {
+            emergencyAlert.classList.remove('hidden');
+            emergencyAlert.querySelector('#emergency-alert-message').textContent = data.emergency_reason || "{{ t('emergency_alert_description') }}";
+        }
         
         activePredictionData = data.predictions;
+        latestReportPayload = {
+            predictions: data.predictions,
+            symptoms: [...selected],
+            selected_count: data.selected_count
+        };
         resultsSection.classList.remove('hidden');
+        document.getElementById('report-actions').classList.remove('hidden');
         renderResults(data);
         
         // Load the guidelines of the top #1 predicted disease automatically
@@ -427,10 +554,50 @@ async function analyse() {
             loadDiseaseGuidelines(data.predictions[0].disease);
         }
     } catch(e) {
+        document.getElementById('report-actions').classList.add('hidden');
         spinner.classList.add('hidden');
         resultsSection.classList.remove('hidden');
         resultsSection.innerHTML = '<div class="p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-semibold">Endpoint offline. Verify active Flask server deployment.</div>';
     }
+}
+
+function downloadReport() {
+    if (!latestReportPayload) {
+        return;
+    }
+    const btn = document.getElementById('download-report-btn');
+    btn.disabled = true;
+    btn.textContent = 'Generating PDF...';
+
+    fetch('/api/report', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(latestReportPayload)
+    })
+    .then(async response => {
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.error || 'Failed to generate report');
+        }
+        return response.blob();
+    })
+    .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'MediScan_Report.pdf';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+    })
+    .catch(error => {
+        alert(error.message || 'Could not generate the PDF report.');
+    })
+    .finally(() => {
+        btn.disabled = false;
+        btn.textContent = 'Download PDF Report';
+    });
 }
 
 // ── Render classification outcomes list ──
@@ -443,9 +610,26 @@ function renderResults(data) {
         Moderate: 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30',
         Mild: 'bg-blue-500/20 text-blue-300 border border-blue-500/30'
     };
+    const severityLabels = {
+        Emergency: 'Emergency',
+        High: 'High Risk',
+        Chronic: 'Chronic',
+        Moderate: 'Moderate',
+        Mild: 'Mild'
+    };
+    const severityDots = {
+        Emergency: 'bg-red-500',
+        High: 'bg-amber-400',
+        Chronic: 'bg-indigo-400',
+        Moderate: 'bg-emerald-400',
+        Mild: 'bg-blue-400'
+    };
 
     sec.innerHTML = data.predictions.map((p, i) => {
-        const sevClass = severityClasses[p.severity] || severityClasses.Mild;
+        const severityKey = Object.prototype.hasOwnProperty.call(severityClasses, p.severity) ? p.severity : 'Mild';
+        const sevClass = severityClasses[severityKey];
+        const sevLabel = severityLabels[severityKey];
+        const sevDot = severityDots[severityKey];
         const borderAccent = i === 0 ? 'border-l-4 border-l-secondary-fixed' : 'border-l border-l-outline-variant/30';
         
         return `
@@ -454,7 +638,7 @@ function renderResults(data) {
                 <div class="flex flex-col gap-1">
                     <div class="flex items-center gap-2">
                         <span class="text-sm font-bold text-white group-hover:text-secondary-fixed transition-colors">${p.disease}</span>
-                        <span class="text-[9px] uppercase tracking-wider font-bold px-2 py-0.5 rounded ${sevClass}">${p.severity}</span>
+                        <span class="inline-flex items-center gap-1 text-[9px] uppercase tracking-wider font-bold px-2 py-0.5 rounded ${sevClass}"><span class="w-2 h-2 rounded-full ${sevDot}"></span>${sevLabel}</span>
                     </div>
                     <span class="text-xs text-on-surface-variant/75 capitalize">${p.description}</span>
                 </div>
@@ -475,6 +659,15 @@ function renderResults(data) {
                 <span class="text-[10px] text-on-surface-variant/55 font-bold uppercase tracking-widest mr-1">Matching Symptoms:</span>
                 ${p.matched_symptoms.map(s => `<span class="text-[9px] bg-white/5 border border-white/10 px-1.5 py-0.5 rounded text-on-surface capitalize">${s.replace(/_/g,' ')}</span>`).join('')}
             </div>` : ''}
+            ${p.medicines.length ? `
+            <div class="grid gap-2 text-[10px] text-on-surface-variant/85">
+                <div><span class="font-bold text-on-surface text-[10px] uppercase tracking-wider">Suggested Medicines:</span> ${p.medicines.slice(0,2).join(', ')}</div>
+                ${p.precautions.length ? `<div><span class="font-bold text-on-surface text-[10px] uppercase tracking-wider">Precautions:</span> ${p.precautions.slice(0,2).join(', ')}</div>` : ''}
+                <div><span class="font-bold text-on-surface text-[10px] uppercase tracking-wider">Recommended Specialist:</span> ${p.specialist}</div>
+            </div>` : `
+            <div class="text-[10px] text-on-surface-variant/85">
+                <span class="font-bold text-on-surface text-[10px] uppercase tracking-wider">Recommended Specialist:</span> ${p.specialist}
+            </div>`}
         </div>`;
     }).join('');
 
@@ -528,8 +721,17 @@ function loadDiseaseGuidelines(diseaseName) {
         Moderate: 'border-emerald-500/40 bg-emerald-500/5 text-emerald-300',
         Mild: 'border-blue-500/40 bg-blue-500/5 text-blue-300'
     };
+    const severityLabels = {
+        Emergency: 'Emergency',
+        High: 'High Risk',
+        Chronic: 'Chronic',
+        Moderate: 'Moderate',
+        Mild: 'Mild'
+    };
     
-    const accentCls = severityAccents[details.severity] || severityAccents.Mild;
+    const severityKey = Object.prototype.hasOwnProperty.call(severityAccents, details.severity) ? details.severity : 'Mild';
+    const accentCls = severityAccents[severityKey];
+    const severityLabel = severityLabels[severityKey];
     
     // Create standard procedural checks based on severity
     let protocols = [];
@@ -588,7 +790,7 @@ function loadDiseaseGuidelines(diseaseName) {
                     <span class="text-xs text-on-surface-variant font-bold uppercase tracking-widest">Active Reference Profile</span>
                     <h4 class="text-base font-black text-white mt-1">${details.disease}</h4>
                 </div>
-                <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded border ${accentCls}">${details.severity} Priority</span>
+                <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded border ${accentCls}">${severityLabel} Priority</span>
             </div>
             
             <div>
@@ -609,15 +811,36 @@ function loadDiseaseGuidelines(diseaseName) {
                     </ul>
                 </div>
                 <div>
-                    <span class="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest block mb-2 text-primary">AI Action Guidelines</span>
-                    <ul class="space-y-1.5">
-                        ${clinicalRecs.map(r => `
-                            <li class="flex items-start gap-1.5 text-xs text-on-surface/85">
-                                <span class="material-symbols-outlined text-[14px] text-primary mt-0.5 flex-shrink-0">lightbulb</span>
-                                <span>${r}</span>
-                            </li>
-                        `).join('')}
-                    </ul>
+                    <span class="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest block mb-2 text-primary">Medicines & Home Remedies</span>
+                    ${details.medicines && details.medicines.length ? `
+                    <div class="mb-3">
+                        <span class="text-[10px] uppercase tracking-wider text-on-surface-variant font-bold">Medicines</span>
+                        <ul class="mt-2 space-y-1.5">
+                            ${details.medicines.map(item => `
+                                <li class="flex items-start gap-1.5 text-xs text-on-surface/85">
+                                    <span class="material-symbols-outlined text-[14px] text-primary mt-0.5 flex-shrink-0">medical_services</span>
+                                    <span>${item}</span>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>` : ''}
+                    ${details.specialist ? `
+                    <div class="mb-3">
+                        <span class="text-[10px] uppercase tracking-wider text-on-surface-variant font-bold">Specialist Doctor</span>
+                        <div class="mt-2 rounded-2xl border border-slate-800 bg-slate-900/80 px-3 py-2 text-xs text-slate-100">${details.specialist}</div>
+                    </div>` : ''}
+                    ${details.home_remedies && details.home_remedies.length ? `
+                    <div>
+                        <span class="text-[10px] uppercase tracking-wider text-on-surface-variant font-bold">Home Remedies</span>
+                        <ul class="mt-2 space-y-1.5">
+                            ${details.home_remedies.map(item => `
+                                <li class="flex items-start gap-1.5 text-xs text-on-surface/85">
+                                    <span class="material-symbols-outlined text-[14px] text-primary mt-0.5 flex-shrink-0">spa</span>
+                                    <span>${item}</span>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>` : ''}
                 </div>
             </div>
         </div>`;

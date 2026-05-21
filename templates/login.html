@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ t('sign_in_to_mediscane') }}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center px-4">
+  <div class="w-full max-w-md rounded-3xl border border-slate-800 bg-slate-900/95 p-8 shadow-2xl shadow-slate-950/50">
+    <div class="mb-6 text-center">
+      <h1 class="text-3xl font-semibold">{{ t('sign_in_to_mediscane') }}</h1>
+      <p class="mt-2 text-sm text-slate-400">{{ t('access_prediction_history') }}</p>
+    </div>
+
+    {% if error %}
+    <div class="mb-4 rounded-2xl bg-red-500/10 border border-red-500/20 px-4 py-3 text-sm text-red-200">{{ error }}</div>
+    {% endif %}
+
+    <form method="POST" class="space-y-4">
+      <div>
+        <label class="block text-xs text-slate-400 uppercase tracking-[0.2em] mb-2">{{ t('username') }}</label>
+        <input name="username" type="text" required class="w-full rounded-2xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-slate-100 outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/20" />
+      </div>
+      <div>
+        <label class="block text-xs text-slate-400 uppercase tracking-[0.2em] mb-2">{{ t('password') }}</label>
+        <input name="password" type="password" required class="w-full rounded-2xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-slate-100 outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/20" />
+      </div>
+      <button type="submit" class="w-full rounded-2xl bg-cyan-500 px-4 py-3 text-sm font-semibold text-slate-950">{{ t('sign_in') }}</button>
+    </form>
+
+    <div class="mt-6 text-center text-xs text-slate-400">
+      {{ t('choose_language') }}:
+      {% for code, label in languages.items() %}
+        <a href="{{ url_for('set_language', lang_code=code) }}" class="px-1 text-cyan-300 hover:text-cyan-100 {% if lang == code %}font-semibold{% endif %}">{{ label }}</a>{% if not loop.last %} | {% endif %}
+      {% endfor %}
+    </div>
+    <p class="mt-6 text-center text-sm text-slate-400">{{ t('dont_have_account') }} <a href="/register" class="text-cyan-300 hover:text-cyan-100">{{ t('register') }}</a></p>
+    <p class="mt-4 text-center text-xs text-slate-600"><a href="/" class="hover:text-cyan-300">{{ t('back_to_home') }}</a></p>
+  </div>
+</body>
+</html>

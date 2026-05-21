@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html class="dark" lang="{{ lang }}">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>MediScan Analytics</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:wght@100..900&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <style>
+        body {
+            background-color: #0b0b0c;
+            color: #e5e2e3;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(18, 18, 20, 0.75);
+            backdrop-filter: blur(18px);
+            border: 1px solid rgba(60, 73, 78, 0.22);
+        }
+        .summary-badge {
+            background: rgba(38, 254, 220, 0.08);
+            color: #26fedc;
+        }
+        .chart-card canvas {
+            min-height: 240px;
+        }
+    </style>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-surface-variant": "#a3b2b8",
+                        "surface-container-highest": "#27272a",
+                        "secondary-fixed": "#26fedc",
+                        "on-secondary-container": "#006a5a",
+                        "on-background": "#e5e2e3",
+                        "background": "#0b0b0c",
+                        "primary": "#a4e6ff",
+                        "surface": "#121214",
+                        "error": "#ffb4ab",
+                        "on-surface": "#e5e2e3",
+                        "outline-variant": "#334155"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "xl": "1rem"
+                    },
+                    fontFamily: {
+                        "headline": ["Geist"],
+                        "body": ["Inter"]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-body min-h-screen flex flex-col">
+    <header class="sticky top-0 z-50 bg-background/90 backdrop-blur-md border-b border-outline-variant/20 py-4 px-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-secondary-fixed text-3xl">analytics</span>
+            <div>
+                <span class="font-headline font-bold text-xl tracking-tight text-white">MediScan Analytics</span>
+                <span class="text-[10px] uppercase font-bold tracking-widest text-on-surface-variant block leading-none">Healthcare Intelligence Dashboard</span>
+            </div>
+        </div>
+        <div class="flex flex-wrap items-center gap-3">
+            <a href="/app" class="flex items-center gap-2 px-4 py-2 rounded-full border border-outline-variant/30 text-sm text-on-surface-variant hover:text-white hover:border-white transition-all">
+                <span class="material-symbols-outlined text-sm">dashboard</span>
+                Diagnosis Console
+            </a>
+            <a href="/history" class="flex items-center gap-2 px-4 py-2 rounded-full border border-outline-variant/30 text-sm text-on-surface-variant hover:text-white hover:border-white transition-all">
+                <span class="material-symbols-outlined text-sm">history</span>
+                Prediction History
+            </a>
+            <a href="/logout" class="flex items-center gap-2 px-4 py-2 rounded-full border border-outline-variant/30 text-sm text-on-surface-variant hover:text-white hover:border-white transition-all">
+                <span class="material-symbols-outlined text-sm">logout</span>
+                Logout
+            </a>
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-[1400px] mx-auto p-6 space-y-6">
+        <section class="grid grid-cols-1 xl:grid-cols-[1.5fr_1fr] gap-6">
+            <div class="glass-card rounded-3xl p-6 overflow-hidden">
+                <div class="flex items-center justify-between gap-4 mb-6">
+                    <div>
+                        <h1 class="text-3xl font-black text-white">Healthcare Analytics</h1>
+                        <p class="text-sm text-on-surface-variant mt-2">Interactive charts powered by your disease catalog and clinical prediction history.</p>
+                    </div>
+                    <div class="rounded-full border border-secondary-fixed/30 bg-secondary-fixed/10 px-4 py-2 text-sm font-semibold text-secondary-fixed">Live metrics refreshed on page load</div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="rounded-3xl border border-outline-variant/40 p-5">
+                        <div class="flex items-center justify-between text-sm text-on-surface-variant uppercase tracking-[0.18em] mb-4">Disease coverage</div>
+                        <div class="text-4xl font-black text-white" id="total-diseases">--</div>
+                        <p class="text-xs text-on-surface-variant mt-2">Total diseases cataloged for risk modeling</p>
+                    </div>
+                    <div class="rounded-3xl border border-outline-variant/40 p-5">
+                        <div class="flex items-center justify-between text-sm text-on-surface-variant uppercase tracking-[0.18em] mb-4">Prediction volume</div>
+                        <div class="text-4xl font-black text-white" id="prediction-volume">--</div>
+                        <p class="text-xs text-on-surface-variant mt-2">Recorded predictions for your account</p>
+                    </div>
+                    <div class="rounded-3xl border border-outline-variant/40 p-5">
+                        <div class="flex items-center justify-between text-sm text-on-surface-variant uppercase tracking-[0.18em] mb-4">Confidence average</div>
+                        <div class="text-4xl font-black text-white" id="avg-confidence">--%</div>
+                        <p class="text-xs text-on-surface-variant mt-2">Average prediction match probability</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card rounded-3xl p-6">
+                <div class="flex items-center justify-between gap-4 mb-5">
+                    <div>
+                        <p class="text-xs uppercase tracking-[0.25em] text-on-surface-variant">Realtime insights</p>
+                        <h2 class="text-xl font-bold text-white mt-2">Rapid wellness signals</h2>
+                    </div>
+                    <span class="rounded-full summary-badge px-4 py-2 text-xs font-semibold">Fresh data</span>
+                </div>
+
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <div class="rounded-3xl border border-outline-variant/30 p-5">
+                        <p class="text-xs uppercase tracking-[0.2em] text-on-surface-variant mb-3">High-risk alerts</p>
+                        <div class="text-3xl font-black text-white" id="high-risk-alerts">--</div>
+                    </div>
+                    <div class="rounded-3xl border border-outline-variant/30 p-5">
+                        <p class="text-xs uppercase tracking-[0.2em] text-on-surface-variant mb-3">Top symptoms</p>
+                        <div class="space-y-2 text-sm text-on-surface-variant" id="top-symptoms">--</div>
+                    </div>
+                </div>
+                <div class="mt-6 rounded-3xl border border-outline-variant/40 p-5 chart-card">
+                    <canvas id="realtime-chart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+            <div class="glass-card rounded-3xl p-6 chart-card">
+                <div class="flex items-center justify-between mb-5">
+                    <div>
+                        <p class="text-xs uppercase tracking-[0.25em] text-on-surface-variant">Disease coverage</p>
+                        <h3 class="text-xl font-bold text-white mt-2">Severity category bar chart</h3>
+                    </div>
+                    <span class="text-xs text-secondary-fixed">Emergency, high-risk, moderate, chronic, mild</span>
+                </div>
+                <canvas id="severity-distribution-chart"></canvas>
+            </div>
+
+            <div class="glass-card rounded-3xl p-6 chart-card">
+                <div class="flex items-center justify-between mb-5">
+                    <div>
+                        <p class="text-xs uppercase tracking-[0.25em] text-on-surface-variant">Patient risk analytics</p>
+                        <h3 class="text-xl font-bold text-white mt-2">Prediction timeline</h3>
+                    </div>
+                    <span class="text-xs text-primary">Daily trends</span>
+                </div>
+                <canvas id="prediction-trend-chart"></canvas>
+            </div>
+        </section>
+
+        <section class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+            <div class="glass-card rounded-3xl p-6 chart-card">
+                <div class="flex items-center justify-between mb-5">
+                    <div>
+                        <p class="text-xs uppercase tracking-[0.25em] text-on-surface-variant">Symptom surveillance</p>
+                        <h3 class="text-xl font-bold text-white mt-2">Top reported symptoms</h3>
+                    </div>
+                    <span class="text-xs text-secondary-fixed">Frequency ranking</span>
+                </div>
+                <canvas id="symptom-frequency-chart"></canvas>
+            </div>
+
+            <div class="glass-card rounded-3xl p-6 chart-card">
+                <div class="flex items-center justify-between mb-5">
+                    <div>
+                        <p class="text-xs uppercase tracking-[0.25em] text-on-surface-variant">Pathogen inventory</p>
+                        <h3 class="text-xl font-bold text-white mt-2">Disease catalog coverage</h3>
+                    </div>
+                    <span class="text-xs text-primary">Catalog heatmap</span>
+                </div>
+                <canvas id="coverage-chart"></canvas>
+            </div>
+        </section>
+    </main>
+
+    <footer class="mt-auto border-t border-outline-variant/15 py-6 px-8 bg-[#09090b] flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-secondary-fixed text-xl">shield_heart</span>
+            <span class="text-sm font-bold text-white">MediScan AI</span>
+        </div>
+        <div class="text-xs text-on-surface-variant/70">
+            © 2026 MediScan AI. Analytics powered by Flask and Chart.js.
+        </div>
+    </footer>
+
+<script>
+const defaultOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+        legend: { labels: { color: '#cbd5e1' } },
+        tooltip: { backgroundColor: '#111827', titleColor: '#f8fafc', bodyColor: '#e2e8f0' }
+    },
+    scales: {
+        x: { ticks: { color: '#cbd5e1' }, grid: { color: 'rgba(148, 163, 184, 0.15)' } },
+        y: { ticks: { color: '#cbd5e1' }, grid: { color: 'rgba(148, 163, 184, 0.15)' } }
+    }
+};
+
+let severityChart, predictionTrendChart, symptomFrequencyChart, coverageChart, realtimeChart;
+
+function formatNumber(value) {
+    return new Intl.NumberFormat('en-US').format(value);
+}
+
+async function loadAnalytics() {
+    try {
+        const response = await fetch('/api/analytics');
+        if (!response.ok) {
+            throw new Error('Failed to load analytics.');
+        }
+        const payload = await response.json();
+
+        document.getElementById('total-diseases').textContent = formatNumber(payload.disease_coverage.total_diseases);
+        document.getElementById('prediction-volume').textContent = formatNumber(payload.prediction_stats.total_predictions);
+        document.getElementById('avg-confidence').textContent = `${formatNumber(payload.prediction_stats.average_probability)}%`;
+        document.getElementById('high-risk-alerts').textContent = formatNumber(payload.real_time_health_analytics.high_risk_alerts);
+
+        const topSymptomsEl = document.getElementById('top-symptoms');
+        topSymptomsEl.innerHTML = payload.real_time_health_analytics.top_reported_symptoms.length
+            ? payload.real_time_health_analytics.top_reported_symptoms.map(item => `<div>${item.symptom} <span class="text-secondary-fixed">(${item.count})</span></div>`).join('')
+            : '<div class="text-on-surface-variant">No reported symptoms yet.</div>';
+
+        renderSeverityDistribution(payload.disease_coverage.severity_distribution);
+        renderPredictionTrend(payload.prediction_stats.prediction_trend);
+        renderSymptomFrequency(payload.symptom_frequency);
+        renderCoverageChart(payload.disease_coverage.top_diseases);
+        renderRealtimeChart(payload.prediction_stats.prediction_trend);
+    } catch (err) {
+        console.error(err);
+        const main = document.querySelector('main');
+        main.innerHTML = `<div class="p-8 text-center text-red-300">Unable to load analytics dashboard. Please sign in and ensure the server is running.</div>`;
+    }
+}
+
+function renderSeverityDistribution(data) {
+    const categoryOrder = ['Emergency', 'High', 'Moderate', 'Chronic', 'Mild', 'Unknown'];
+    const labels = categoryOrder.filter(category => data.some(item => item.severity === category));
+    const counts = labels.map(category => {
+        const found = data.find(item => item.severity === category);
+        return found ? found.count : 0;
+    });
+    const colors = labels.map(label => {
+        switch (label) {
+            case 'Emergency': return '#ef4444';
+            case 'High': return '#f59e0b';
+            case 'Moderate': return '#3b82f6';
+            case 'Chronic': return '#8b5cf6';
+            case 'Mild': return '#10b981';
+            default: return '#64748b';
+        }
+    });
+
+    if (severityChart) severityChart.destroy();
+    severityChart = new Chart(document.getElementById('severity-distribution-chart'), {
+        type: 'bar',
+        data: {
+            labels,
+            datasets: [{
+                label: 'Conditions',
+                data: counts,
+                backgroundColor: colors,
+                borderColor: colors.map(color => {
+                    return color.replace(/rgba?\(([^)]+)\)/, 'rgb($1)');
+                }),
+                borderWidth: 1
+            }]
+        },
+        options: {
+            ...defaultOptions,
+            indexAxis: 'y',
+            plugins: {
+                ...defaultOptions.plugins,
+                legend: { display: false }
+            },
+            scales: {
+                x: {
+                    ...defaultOptions.scales.x,
+                    beginAtZero: true,
+                    ticks: { color: '#cbd5e1' }
+                },
+                y: {
+                    ...defaultOptions.scales.y,
+                    ticks: { color: '#cbd5e1' }
+                }
+            }
+        }
+    });
+}
+
+function renderPredictionTrend(data) {
+    const labels = data.map(item => item.date);
+    const counts = data.map(item => item.count);
+
+    if (predictionTrendChart) predictionTrendChart.destroy();
+    predictionTrendChart = new Chart(document.getElementById('prediction-trend-chart'), {
+        type: 'line',
+        data: {
+            labels,
+            datasets: [{
+                label: 'Predictions',
+                data: counts,
+                borderColor: '#22d3ee',
+                backgroundColor: 'rgba(38, 254, 220, 0.18)',
+                fill: true,
+                tension: 0.35,
+                pointRadius: 3,
+                pointBackgroundColor: '#22d3ee'
+            }]
+        },
+        options: {
+            ...defaultOptions,
+            plugins: {
+                ...defaultOptions.plugins,
+                legend: { display: false }
+            }
+        }
+    });
+}
+
+function renderSymptomFrequency(data) {
+    const labels = data.map(item => item.symptom);
+    const counts = data.map(item => item.count);
+
+    if (symptomFrequencyChart) symptomFrequencyChart.destroy();
+    symptomFrequencyChart = new Chart(document.getElementById('symptom-frequency-chart'), {
+        type: 'bar',
+        data: {
+            labels,
+            datasets: [{
+                label: 'Occurrences',
+                data: counts,
+                backgroundColor: 'rgba(165, 243, 252, 0.85)',
+                borderColor: '#22d3ee',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            ...defaultOptions,
+            indexAxis: 'y',
+            plugins: {
+                ...defaultOptions.plugins,
+                legend: { display: false }
+            },
+            scales: {
+                x: { ...defaultOptions.scales.x, beginAtZero: true },
+                y: { ...defaultOptions.scales.y }
+            }
+        }
+    });
+}
+
+function renderCoverageChart(data) {
+    const labels = data.map(item => item.name);
+    const counts = data.map(item => item.symptom_count);
+
+    if (coverageChart) coverageChart.destroy();
+    coverageChart = new Chart(document.getElementById('coverage-chart'), {
+        type: 'bar',
+        data: {
+            labels,
+            datasets: [{
+                label: 'Symptom count',
+                data: counts,
+                backgroundColor: labels.map((_, index) => `rgba(56, 189, 248, ${0.9 - index * 0.07})`),
+                borderColor: '#38bdf8',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            ...defaultOptions,
+            plugins: {
+                ...defaultOptions.plugins,
+                legend: { display: false }
+            }
+        }
+    });
+}
+
+function renderRealtimeChart(data) {
+    const labels = data.map(item => item.date);
+    const counts = data.map(item => item.count);
+
+    if (realtimeChart) realtimeChart.destroy();
+    realtimeChart = new Chart(document.getElementById('realtime-chart'), {
+        type: 'line',
+        data: {
+            labels,
+            datasets: [{
+                label: 'Realtime activity',
+                data: counts,
+                borderColor: '#f97316',
+                backgroundColor: 'rgba(249, 115, 22, 0.2)',
+                fill: true,
+                tension: 0.4,
+                pointRadius: 2,
+                pointBackgroundColor: '#f97316'
+            }]
+        },
+        options: {
+            ...defaultOptions,
+            plugins: {
+                ...defaultOptions.plugins,
+                legend: { display: false }
+            }
+        }
+    });
+}
+
+loadAnalytics();
+</script>
+</body>
+</html>

@@ -1,1 +1,731 @@
-{"Flu": {"symptoms": ["fever", "cough", "fatigue", "body_ache", "headache", "chills", "sore_throat", "runny_nose"], "description": "Influenza - a viral respiratory infection", "severity": "Moderate", "action": "Rest, hydrate, and consult a doctor if symptoms worsen."}, "Common Cold": {"symptoms": ["runny_nose", "sore_throat", "cough", "sneezing", "mild_fever", "fatigue"], "description": "Viral upper respiratory tract infection", "severity": "Mild", "action": "Rest and stay hydrated. Symptoms usually resolve in 7-10 days."}, "COVID-19": {"symptoms": ["fever", "cough", "fatigue", "loss_of_taste", "loss_of_smell", "shortness_of_breath", "body_ache", "headache"], "description": "Coronavirus disease caused by SARS-CoV-2", "severity": "High", "action": "Isolate immediately and seek medical attention. Get tested."}, "Dengue": {"symptoms": ["high_fever", "severe_headache", "body_ache", "joint_pain", "rash", "nausea", "vomiting", "fatigue"], "description": "Mosquito-borne viral infection", "severity": "High", "action": "Seek immediate medical attention. Monitor platelet count."}, "Malaria": {"symptoms": ["high_fever", "chills", "headache", "nausea", "vomiting", "fatigue", "sweating", "muscle_pain"], "description": "Parasitic disease spread by infected mosquitoes", "severity": "High", "action": "Seek immediate medical attention. Antimalarial drugs required."}, "Typhoid": {"symptoms": ["high_fever", "abdominal_pain", "headache", "fatigue", "diarrhea", "constipation", "loss_of_appetite", "rash"], "description": "Bacterial infection caused by Salmonella typhi", "severity": "High", "action": "Antibiotics required. Consult a doctor immediately."}, "Pneumonia": {"symptoms": ["fever", "cough", "shortness_of_breath", "chest_pain", "fatigue", "chills", "sweating", "nausea"], "description": "Lung infection causing inflammation of air sacs", "severity": "High", "action": "Immediate medical attention required. May need hospitalization."}, "Tuberculosis": {"symptoms": ["persistent_cough", "blood_in_cough", "chest_pain", "fatigue", "weight_loss", "night_sweats", "fever", "loss_of_appetite"], "description": "Bacterial infection primarily affecting the lungs", "severity": "High", "action": "Consult a pulmonologist. Long-term antibiotic treatment needed."}, "Diabetes": {"symptoms": ["frequent_urination", "excessive_thirst", "fatigue", "blurred_vision", "slow_healing", "weight_loss", "numbness", "frequent_infections"], "description": "Metabolic disease with high blood sugar levels", "severity": "Chronic", "action": "Consult an endocrinologist. Lifestyle changes and medication needed."}, "Hypertension": {"symptoms": ["headache", "dizziness", "chest_pain", "shortness_of_breath", "nosebleed", "fatigue", "blurred_vision", "palpitations"], "description": "High blood pressure condition", "severity": "Chronic", "action": "Monitor BP regularly. Medication and lifestyle changes required."}, "Asthma": {"symptoms": ["shortness_of_breath", "wheezing", "cough", "chest_tightness", "difficulty_breathing", "fatigue", "anxiety"], "description": "Chronic respiratory condition with airway inflammation", "severity": "Chronic", "action": "Use prescribed inhalers. Avoid triggers and consult a pulmonologist."}, "Jaundice": {"symptoms": ["yellowing_of_skin", "yellowing_of_eyes", "dark_urine", "fatigue", "abdominal_pain", "nausea", "loss_of_appetite", "fever"], "description": "Yellowing of skin due to high bilirubin levels", "severity": "Moderate", "action": "Consult a gastroenterologist. Liver function tests needed."}, "Chickenpox": {"symptoms": ["rash", "itching", "fever", "fatigue", "headache", "loss_of_appetite", "body_ache"], "description": "Highly contagious viral disease causing blister-like rash", "severity": "Moderate", "action": "Rest and avoid scratching. Antiviral medication may help."}, "Measles": {"symptoms": ["high_fever", "cough", "runny_nose", "red_eyes", "rash", "fatigue", "sore_throat", "loss_of_appetite"], "description": "Highly contagious viral disease preventable by vaccine", "severity": "High", "action": "Isolate and seek medical care. Supportive treatment required."}, "Anemia": {"symptoms": ["fatigue", "weakness", "shortness_of_breath", "dizziness", "headache", "cold_hands", "chest_pain", "irregular_heartbeat"], "description": "Condition with insufficient healthy red blood cells", "severity": "Moderate", "action": "Iron supplements and dietary changes. Consult a hematologist."}, "Gastroenteritis": {"symptoms": ["diarrhea", "nausea", "vomiting", "abdominal_pain", "fever", "headache", "muscle_ache", "loss_of_appetite"], "description": "Inflammation of stomach and intestines (stomach flu)", "severity": "Moderate", "action": "Stay hydrated. Seek medical attention if symptoms persist."}, "Urinary Tract Infection": {"symptoms": ["burning_urination", "frequent_urination", "cloudy_urine", "pelvic_pain", "fever", "chills", "back_pain", "fatigue"], "description": "Bacterial infection in the urinary system", "severity": "Moderate", "action": "Antibiotics required. Drink plenty of water."}, "Migraine": {"symptoms": ["severe_headache", "nausea", "vomiting", "sensitivity_to_light", "sensitivity_to_sound", "blurred_vision", "dizziness", "fatigue"], "description": "Neurological condition causing intense headaches", "severity": "Moderate", "action": "Rest in a dark quiet room. Take prescribed migraine medication."}, "Arthritis": {"symptoms": ["joint_pain", "joint_swelling", "stiffness", "reduced_range_of_motion", "fatigue", "redness", "warmth_in_joints"], "description": "Inflammation of one or more joints", "severity": "Chronic", "action": "Physiotherapy and anti-inflammatory medications. Consult a rheumatologist."}, "Anxiety Disorder": {"symptoms": ["excessive_worry", "restlessness", "fatigue", "difficulty_concentrating", "irritability", "muscle_tension", "sleep_problems", "palpitations"], "description": "Mental health disorder with persistent worry", "severity": "Moderate", "action": "Seek professional mental health support. Therapy and medication may help."}, "Hypothyroidism": {"symptoms": ["fatigue", "weight_gain", "cold_sensitivity", "constipation", "dry_skin", "hair_loss", "slow_heart_rate", "depression"], "description": "Underactive thyroid gland producing insufficient hormones", "severity": "Chronic", "action": "Thyroid hormone replacement therapy. Regular TSH monitoring."}, "Kidney Stones": {"symptoms": ["severe_back_pain", "side_pain", "painful_urination", "blood_in_urine", "nausea", "vomiting", "frequent_urination", "fever"], "description": "Hard mineral deposits forming inside the kidneys", "severity": "High", "action": "Increase water intake. Pain management and possible medical procedures."}, "GERD": {"symptoms": ["heartburn", "acid_reflux", "chest_pain", "difficulty_swallowing", "regurgitation", "nausea", "cough", "sore_throat"], "description": "Gastroesophageal reflux disease causing acid reflux", "severity": "Moderate", "action": "Antacids and lifestyle changes. Consult a gastroenterologist."}, "Depression": {"symptoms": ["persistent_sadness", "loss_of_interest", "fatigue", "sleep_problems", "appetite_changes", "difficulty_concentrating", "worthlessness", "hopelessness"], "description": "Mental health disorder affecting mood and daily functioning", "severity": "Moderate", "action": "Seek professional mental health support. Therapy and medication available."}, "Appendicitis": {"symptoms": ["severe_abdominal_pain", "nausea", "vomiting", "fever", "loss_of_appetite", "abdominal_swelling", "diarrhea", "constipation"], "description": "Inflammation of the appendix requiring urgent treatment", "severity": "Emergency", "action": "EMERGENCY: Seek immediate medical care. Surgery may be required."}}
+{
+  "Flu": {
+    "symptoms": [
+      "fever",
+      "cough",
+      "fatigue",
+      "body_ache",
+      "headache",
+      "chills",
+      "sore_throat",
+      "runny_nose"
+    ],
+    "description": "Influenza - a viral respiratory infection",
+    "severity": "Moderate",
+    "action": "Rest, hydrate, and consult a doctor if symptoms worsen.",
+    "medicines": [
+      "Paracetamol or acetaminophen for fever and aches",
+      "Ibuprofen for inflammation if tolerated",
+      "Cough suppressant or throat lozenges"
+    ],
+    "precautions": [
+      "Rest and limit physical activity",
+      "Stay hydrated with water and warm fluids",
+      "Avoid sharing utensils and cover your mouth when coughing"
+    ],
+    "home_remedies": [
+      "Ginger tea with honey",
+      "Steam inhalation to ease congestion",
+      "Warm broth to soothe the throat"
+    ],
+    "specialist": "General Physician"
+  },
+  "Common Cold": {
+    "symptoms": [
+      "runny_nose",
+      "sore_throat",
+      "cough",
+      "sneezing",
+      "mild_fever",
+      "fatigue"
+    ],
+    "description": "Viral upper respiratory tract infection",
+    "severity": "Mild",
+    "action": "Rest and stay hydrated. Symptoms usually resolve in 7-10 days.",
+    "medicines": [
+      "Paracetamol for fever and headache",
+      "Decongestant spray or tablets for nasal congestion",
+      "Throat lozenges for soreness"
+    ],
+    "precautions": [
+      "Drink plenty of fluids",
+      "Rest and avoid cold exposure",
+      "Wash hands frequently to prevent spread"
+    ],
+    "home_remedies": [
+      "Warm saline gargle",
+      "Honey and lemon tea",
+      "Steam inhalation with eucalyptus"
+    ],
+    "specialist": "General Physician"
+  },
+  "COVID-19": {
+    "symptoms": [
+      "fever",
+      "cough",
+      "fatigue",
+      "loss_of_taste",
+      "loss_of_smell",
+      "shortness_of_breath",
+      "body_ache",
+      "headache"
+    ],
+    "description": "Coronavirus disease caused by SARS-CoV-2",
+    "severity": "High",
+    "action": "Isolate immediately and seek medical attention. Get tested.",
+    "medicines": [
+      "Paracetamol for fever and discomfort",
+      "Prescription antivirals if advised by a doctor",
+      "Oxygen support if breathing becomes difficult"
+    ],
+    "precautions": [
+      "Isolate from others",
+      "Wear a mask and practice respiratory hygiene",
+      "Monitor oxygen saturation and temperature frequently"
+    ],
+    "home_remedies": [
+      "Stay hydrated and rest",
+      "Use humidified air to ease cough",
+      "Gargle warm salt water for throat comfort"
+    ],
+    "specialist": "Infectious Disease Specialist"
+  },
+  "Dengue": {
+    "symptoms": [
+      "high_fever",
+      "severe_headache",
+      "body_ache",
+      "joint_pain",
+      "rash",
+      "nausea",
+      "vomiting",
+      "fatigue"
+    ],
+    "description": "Mosquito-borne viral infection",
+    "severity": "High",
+    "action": "Seek immediate medical attention. Monitor platelet count.",
+    "medicines": [
+      "Paracetamol for fever and body pain",
+      "Oral rehydration salts to replace fluids",
+      "Avoid aspirin and ibuprofen unless directed by a doctor"
+    ],
+    "precautions": [
+      "Rest and drink plenty of fluids",
+      "Monitor platelet count and bleeding signs",
+      "Avoid mosquito exposure and use repellents"
+    ],
+    "home_remedies": [
+      "Cold compress for fever",
+      "Coconut water or electrolyte drinks to stay hydrated"
+    ],
+    "specialist": "Infectious Disease Specialist"
+  },
+  "Malaria": {
+    "symptoms": [
+      "high_fever",
+      "chills",
+      "headache",
+      "nausea",
+      "vomiting",
+      "fatigue",
+      "sweating",
+      "muscle_pain"
+    ],
+    "description": "Parasitic disease spread by infected mosquitoes",
+    "severity": "High",
+    "action": "Seek immediate medical attention. Antimalarial drugs required.",
+    "medicines": [
+      "Prescription antimalarial medication as directed by a physician",
+      "Paracetamol for fever control",
+      "Fluids to prevent dehydration"
+    ],
+    "precautions": [
+      "Seek immediate medical attention",
+      "Sleep under a treated mosquito net",
+      "Avoid self-medicating without confirmation"
+    ],
+    "home_remedies": [
+      "Drink plenty of fluids and nutrient-rich broths"
+    ],
+    "specialist": "Infectious Disease Specialist"
+  },
+  "Typhoid": {
+    "symptoms": [
+      "high_fever",
+      "abdominal_pain",
+      "headache",
+      "fatigue",
+      "diarrhea",
+      "constipation",
+      "loss_of_appetite",
+      "rash"
+    ],
+    "description": "Bacterial infection caused by Salmonella typhi",
+    "severity": "High",
+    "action": "Antibiotics required. Consult a doctor immediately.",
+    "medicines": [
+      "Prescription antibiotics as directed by a doctor",
+      "Oral rehydration salts for dehydration",
+      "Paracetamol for fever management"
+    ],
+    "precautions": [
+      "Avoid contaminated food and water",
+      "Rest and follow a bland diet",
+      "Seek medical evaluation promptly"
+    ],
+    "home_remedies": [
+      "Drink boiled or bottled water",
+      "Eat simple, light foods such as khichdi or broths"
+    ],
+    "specialist": "Infectious Disease Specialist"
+  },
+  "Pneumonia": {
+    "symptoms": [
+      "fever",
+      "cough",
+      "shortness_of_breath",
+      "chest_pain",
+      "fatigue",
+      "chills",
+      "sweating",
+      "nausea"
+    ],
+    "description": "Lung infection causing inflammation of air sacs",
+    "severity": "High",
+    "action": "Immediate medical attention required. May need hospitalization.",
+    "medicines": [
+      "Antibiotics or antiviral therapy as prescribed",
+      "Cough expectorant or inhaler if prescribed",
+      "Fever reducers such as paracetamol"
+    ],
+    "precautions": [
+      "Keep the chest warm and rest",
+      "Avoid smoke and irritants",
+      "Seek medical care if breathing becomes difficult"
+    ],
+    "home_remedies": [
+      "Stay hydrated with warm liquids",
+      "Use a humidifier to ease breathing"
+    ],
+    "specialist": "Pulmonologist"
+  },
+  "Tuberculosis": {
+    "symptoms": [
+      "persistent_cough",
+      "blood_in_cough",
+      "chest_pain",
+      "fatigue",
+      "weight_loss",
+      "night_sweats",
+      "fever",
+      "loss_of_appetite"
+    ],
+    "description": "Bacterial infection primarily affecting the lungs",
+    "severity": "High",
+    "action": "Consult a pulmonologist. Long-term antibiotic treatment needed.",
+    "medicines": [
+      "Prescription anti-tuberculosis medication under supervision",
+      "Vitamins and nutritional support as recommended"
+    ],
+    "precautions": [
+      "Follow the full treatment course exactly",
+      "Avoid spreading germs by covering mouth while coughing",
+      "Attend follow-up exams regularly"
+    ],
+    "home_remedies": [
+      "Rest well and maintain balanced nutrition",
+      "Avoid crowded indoor spaces during active infection"
+    ],
+    "specialist": "Pulmonologist"
+  },
+  "Diabetes": {
+    "symptoms": [
+      "frequent_urination",
+      "excessive_thirst",
+      "fatigue",
+      "blurred_vision",
+      "slow_healing",
+      "weight_loss",
+      "numbness",
+      "frequent_infections"
+    ],
+    "description": "Metabolic disease with high blood sugar levels",
+    "severity": "Chronic",
+    "action": "Consult an endocrinologist. Lifestyle changes and medication needed.",
+    "medicines": [
+      "Metformin or insulin therapy as prescribed",
+      "Oral glucose-lowering medication if advised"
+    ],
+    "precautions": [
+      "Monitor blood sugar regularly",
+      "Follow a balanced diet and exercise plan",
+      "Avoid high-sugar foods and processed snacks"
+    ],
+    "home_remedies": [
+      "Drink plenty of water",
+      "Eat fiber-rich foods like oats and leafy greens"
+    ],
+    "specialist": "Endocrinologist"
+  },
+  "Hypertension": {
+    "symptoms": [
+      "headache",
+      "dizziness",
+      "chest_pain",
+      "shortness_of_breath",
+      "nosebleed",
+      "fatigue",
+      "blurred_vision",
+      "palpitations"
+    ],
+    "description": "High blood pressure condition",
+    "severity": "Chronic",
+    "action": "Monitor BP regularly. Medication and lifestyle changes required.",
+    "medicines": [
+      "ACE inhibitors or beta-blockers as prescribed",
+      "Diuretics or calcium channel blockers if advised"
+    ],
+    "precautions": [
+      "Reduce salt intake",
+      "Limit alcohol and caffeine",
+      "Practice stress management and exercise regularly"
+    ],
+    "home_remedies": [
+      "Drink hibiscus tea or warm lemon water",
+      "Practice deep breathing exercises"
+    ],
+    "specialist": "Cardiologist"
+  },
+  "Asthma": {
+    "symptoms": [
+      "shortness_of_breath",
+      "wheezing",
+      "cough",
+      "chest_tightness",
+      "difficulty_breathing",
+      "fatigue",
+      "anxiety"
+    ],
+    "description": "Chronic respiratory condition with airway inflammation",
+    "severity": "Chronic",
+    "action": "Use prescribed inhalers. Avoid triggers and consult a pulmonologist.",
+    "medicines": [
+      "Inhaled bronchodilator rescue inhaler",
+      "Inhaled corticosteroid maintenance therapy as prescribed"
+    ],
+    "precautions": [
+      "Avoid known triggers like smoke and dust",
+      "Keep inhalers accessible",
+      "Monitor breathing and peak flow if advised"
+    ],
+    "home_remedies": [
+      "Use a warm mist humidifier",
+      "Practice controlled breathing exercises"
+    ],
+    "specialist": "Pulmonologist"
+  },
+  "Jaundice": {
+    "symptoms": [
+      "yellowing_of_skin",
+      "yellowing_of_eyes",
+      "dark_urine",
+      "fatigue",
+      "abdominal_pain",
+      "nausea",
+      "loss_of_appetite",
+      "fever"
+    ],
+    "description": "Yellowing of skin due to high bilirubin levels",
+    "severity": "Moderate",
+    "action": "Consult a gastroenterologist. Liver function tests needed.",
+    "medicines": [
+      "Prescription liver support medication if advised",
+      "Avoid unnecessary pain relievers that affect the liver"
+    ],
+    "precautions": [
+      "Avoid alcohol and fatty foods",
+      "Stay hydrated and eat a healthy diet",
+      "Consult a doctor for liver function tests"
+    ],
+    "home_remedies": [
+      "Drink plenty of water and fresh fruit juices",
+      "Eat light, easy-to-digest foods such as soups"
+    ],
+    "specialist": "Gastroenterologist"
+  },
+  "Chickenpox": {
+    "symptoms": [
+      "rash",
+      "itching",
+      "fever",
+      "fatigue",
+      "headache",
+      "loss_of_appetite",
+      "body_ache"
+    ],
+    "description": "Highly contagious viral disease causing blister-like rash",
+    "severity": "Moderate",
+    "action": "Rest and avoid scratching. Antiviral medication may help.",
+    "medicines": [
+      "Calamine lotion to soothe itching",
+      "Antihistamines for itching relief",
+      "Paracetamol for fever if needed"
+    ],
+    "precautions": [
+      "Avoid scratching blisters",
+      "Keep the skin clean and dry",
+      "Isolate to prevent spread"
+    ],
+    "home_remedies": [
+      "Oatmeal baths for itching",
+      "Cool compresses on irritated skin"
+    ],
+    "specialist": "Dermatologist"
+  },
+  "Measles": {
+    "symptoms": [
+      "high_fever",
+      "cough",
+      "runny_nose",
+      "red_eyes",
+      "rash",
+      "fatigue",
+      "sore_throat",
+      "loss_of_appetite"
+    ],
+    "description": "Highly contagious viral disease preventable by vaccine",
+    "severity": "High",
+    "action": "Isolate and seek medical care. Supportive treatment required.",
+    "medicines": [
+      "Vitamin A supplement if prescribed",
+      "Paracetamol for fever and discomfort"
+    ],
+    "precautions": [
+      "Isolate from others",
+      "Stay hydrated and rest",
+      "Consult healthcare provider for supportive treatment"
+    ],
+    "home_remedies": [
+      "Use cool compresses for eye discomfort",
+      "Drink broth and warm fluids"
+    ],
+    "specialist": "Pediatrician"
+  },
+  "Anemia": {
+    "symptoms": [
+      "fatigue",
+      "weakness",
+      "shortness_of_breath",
+      "dizziness",
+      "headache",
+      "cold_hands",
+      "chest_pain",
+      "irregular_heartbeat"
+    ],
+    "description": "Condition with insufficient healthy red blood cells",
+    "severity": "Moderate",
+    "action": "Iron supplements and dietary changes. Consult a hematologist.",
+    "medicines": [
+      "Iron supplements and folic acid as prescribed",
+      "Vitamin B12 or vitamin C supplements if needed"
+    ],
+    "precautions": [
+      "Eat iron-rich foods like spinach and lean meats",
+      "Avoid tea or coffee with meals",
+      "Schedule follow-up blood tests"
+    ],
+    "home_remedies": [
+      "Consume citrus fruits with iron-rich meals",
+      "Drink plenty of water"
+    ],
+    "specialist": "Hematologist"
+  },
+  "Gastroenteritis": {
+    "symptoms": [
+      "diarrhea",
+      "nausea",
+      "vomiting",
+      "abdominal_pain",
+      "fever",
+      "headache",
+      "muscle_ache",
+      "loss_of_appetite"
+    ],
+    "description": "Inflammation of stomach and intestines (stomach flu)",
+    "severity": "Moderate",
+    "action": "Stay hydrated. Seek medical attention if symptoms persist.",
+    "medicines": [
+      "Oral rehydration salts",
+      "Anti-nausea medication if prescribed",
+      "Antidiarrheal agents when recommended"
+    ],
+    "precautions": [
+      "Avoid dairy and spicy foods",
+      "Stay hydrated with electrolyte solutions",
+      "Eat bland foods until symptoms improve"
+    ],
+    "home_remedies": [
+      "Sip ginger tea or mint water",
+      "Eat bananas, rice, applesauce, and toast (BRAT diet)"
+    ],
+    "specialist": "Gastroenterologist"
+  },
+  "Urinary Tract Infection": {
+    "symptoms": [
+      "burning_urination",
+      "frequent_urination",
+      "cloudy_urine",
+      "pelvic_pain",
+      "fever",
+      "chills",
+      "back_pain",
+      "fatigue"
+    ],
+    "description": "Bacterial infection in the urinary system",
+    "severity": "Moderate",
+    "action": "Antibiotics required. Drink plenty of water.",
+    "medicines": [
+      "Antibiotics prescribed by a doctor",
+      "Pain reliever such as paracetamol for discomfort"
+    ],
+    "precautions": [
+      "Drink plenty of water",
+      "Urinate after intercourse",
+      "Avoid irritants like strong soaps and fragrances"
+    ],
+    "home_remedies": [
+      "Cranberry juice or supplements",
+      "Warm compress on the lower abdomen"
+    ],
+    "specialist": "Urologist"
+  },
+  "Migraine": {
+    "symptoms": [
+      "severe_headache",
+      "nausea",
+      "vomiting",
+      "sensitivity_to_light",
+      "sensitivity_to_sound",
+      "blurred_vision",
+      "dizziness",
+      "fatigue"
+    ],
+    "description": "Neurological condition causing intense headaches",
+    "severity": "Moderate",
+    "action": "Rest in a dark quiet room. Take prescribed migraine medication.",
+    "medicines": [
+      "Ibuprofen or acetaminophen for pain",
+      "Triptans or prescription migraine medication if advised"
+    ],
+    "precautions": [
+      "Rest in a quiet, dark room",
+      "Avoid bright lights and strong smells",
+      "Stay hydrated and maintain regular meals"
+    ],
+    "home_remedies": [
+      "Apply a cold pack to the forehead",
+      "Practice relaxation and breathing exercises"
+    ],
+    "specialist": "Neurologist"
+  },
+  "Arthritis": {
+    "symptoms": [
+      "joint_pain",
+      "joint_swelling",
+      "stiffness",
+      "reduced_range_of_motion",
+      "fatigue",
+      "redness",
+      "warmth_in_joints"
+    ],
+    "description": "Inflammation of one or more joints",
+    "severity": "Chronic",
+    "action": "Physiotherapy and anti-inflammatory medications. Consult a rheumatologist.",
+    "medicines": [
+      "NSAIDs such as ibuprofen for pain relief",
+      "Topical pain relievers or prescription anti-inflammatory drugs"
+    ],
+    "precautions": [
+      "Keep joints warm and supported",
+      "Avoid repetitive stress on affected joints",
+      "Follow a physical therapy routine"
+    ],
+    "home_remedies": [
+      "Gentle joint exercises",
+      "Warm baths with Epsom salt"
+    ],
+    "specialist": "Rheumatologist"
+  },
+  "Anxiety Disorder": {
+    "symptoms": [
+      "excessive_worry",
+      "restlessness",
+      "fatigue",
+      "difficulty_concentrating",
+      "irritability",
+      "muscle_tension",
+      "sleep_problems",
+      "palpitations"
+    ],
+    "description": "Mental health disorder with persistent worry",
+    "severity": "Moderate",
+    "action": "Seek professional mental health support. Therapy and medication may help.",
+    "medicines": [
+      "Prescription anti-anxiety medication if advised",
+      "Low-dose antidepressants for chronic symptoms"
+    ],
+    "precautions": [
+      "Practice stress reduction techniques",
+      "Avoid caffeine and stimulants",
+      "Maintain a regular sleep schedule"
+    ],
+    "home_remedies": [
+      "Try meditation or guided breathing",
+      "Take short outdoor walks"
+    ],
+    "specialist": "Psychiatrist"
+  },
+  "Hypothyroidism": {
+    "symptoms": [
+      "fatigue",
+      "weight_gain",
+      "cold_sensitivity",
+      "constipation",
+      "dry_skin",
+      "hair_loss",
+      "slow_heart_rate",
+      "depression"
+    ],
+    "description": "Underactive thyroid gland producing insufficient hormones",
+    "severity": "Chronic",
+    "action": "Thyroid hormone replacement therapy. Regular TSH monitoring.",
+    "medicines": [
+      "Levothyroxine thyroid hormone replacement",
+      "Take medication on an empty stomach as directed"
+    ],
+    "precautions": [
+      "Monitor thyroid levels regularly",
+      "Avoid soy and high-fiber meals around dosing time",
+      "Follow your doctor\u2019s dosage instructions"
+    ],
+    "home_remedies": [
+      "Eat selenium-rich foods like nuts and seeds",
+      "Stay hydrated and active"
+    ],
+    "specialist": "Endocrinologist"
+  },
+  "Kidney Stones": {
+    "symptoms": [
+      "severe_back_pain",
+      "side_pain",
+      "painful_urination",
+      "blood_in_urine",
+      "nausea",
+      "vomiting",
+      "frequent_urination",
+      "fever"
+    ],
+    "description": "Hard mineral deposits forming inside the kidneys",
+    "severity": "High",
+    "action": "Increase water intake. Pain management and possible medical procedures.",
+    "medicines": [
+      "Pain relievers such as ibuprofen or paracetamol",
+      "Alpha blockers if prescribed to ease stone passage"
+    ],
+    "precautions": [
+      "Drink plenty of water",
+      "Avoid high-oxalate foods if advised",
+      "Seek care if pain is severe or urine is bloody"
+    ],
+    "home_remedies": [
+      "Lemon water to support hydration",
+      "Warm compress for flank pain"
+    ],
+    "specialist": "Urologist"
+  },
+  "GERD": {
+    "symptoms": [
+      "heartburn",
+      "acid_reflux",
+      "chest_pain",
+      "difficulty_swallowing",
+      "regurgitation",
+      "nausea",
+      "cough",
+      "sore_throat"
+    ],
+    "description": "Gastroesophageal reflux disease causing acid reflux",
+    "severity": "Moderate",
+    "action": "Antacids and lifestyle changes. Consult a gastroenterologist.",
+    "medicines": [
+      "Antacids for immediate relief",
+      "H2 blockers or proton pump inhibitors if prescribed"
+    ],
+    "precautions": [
+      "Avoid spicy or fatty foods",
+      "Eat smaller meals and avoid lying down after eating",
+      "Elevate the head while sleeping"
+    ],
+    "home_remedies": [
+      "Drink chamomile or ginger tea",
+      "Chew gum after meals to increase saliva production"
+    ],
+    "specialist": "Gastroenterologist"
+  },
+  "Depression": {
+    "symptoms": [
+      "persistent_sadness",
+      "loss_of_interest",
+      "fatigue",
+      "sleep_problems",
+      "appetite_changes",
+      "difficulty_concentrating",
+      "worthlessness",
+      "hopelessness"
+    ],
+    "description": "Mental health disorder affecting mood and daily functioning",
+    "severity": "Moderate",
+    "action": "Seek professional mental health support. Therapy and medication available.",
+    "medicines": [
+      "Prescription antidepressants if recommended",
+      "Supplements such as vitamin D if advised"
+    ],
+    "precautions": [
+      "Seek regular mental health support",
+      "Keep a consistent sleep and activity schedule",
+      "Avoid alcohol and drugs as coping mechanisms"
+    ],
+    "home_remedies": [
+      "Engage in gentle exercise",
+      "Practice journaling or mindfulness"
+    ],
+    "specialist": "Psychiatrist"
+  },
+  "Appendicitis": {
+    "symptoms": [
+      "severe_abdominal_pain",
+      "nausea",
+      "vomiting",
+      "fever",
+      "loss_of_appetite",
+      "abdominal_swelling",
+      "diarrhea",
+      "constipation"
+    ],
+    "description": "Inflammation of the appendix requiring urgent treatment",
+    "severity": "Emergency",
+    "action": "EMERGENCY: Seek immediate medical care. Surgery may be required.",
+    "medicines": [
+      "Do not self-medicate; emergency surgical care is required"
+    ],
+    "precautions": [
+      "Seek immediate medical attention",
+      "Avoid eating until evaluated by a doctor",
+      "Do not take strong painkillers that mask symptoms without guidance"
+    ],
+    "home_remedies": [
+      "No home remedies; this is a medical emergency."
+    ],
+    "specialist": "General Surgeon"
+  }
+}
